@@ -1,1 +1,77 @@
-let currentTabId='tab1',currentLang='ru';function closeModal(){document.getElementById('welcomeModal').style.display='none'}window.onscroll=function(){let b=document.getElementById('btnUp');if(document.body.scrollTop>200||document.documentElement.scrollTop>200){b.style.display='flex'}else{b.style.display='none'}};function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'})}const baseSynonyms={саня:"алекс",санек:"алекс",санёк:"алекс",шурик:"алекс",леха:"алекс","лёха":"алекс",лешка:"алекс",алеша:"алекс",серега:"серг","серёга":"серг",сережа:"серг","серёжа":"серг",паша:"паве",вова:"влад",володя:"влад",слава:"влад",славик:"влад",баха:"бахы",баке:"бахы",мура:"мура",сека:"сери",секе:"сери",сако:"сама",саке:"самат",коля:"нико",женя:"евге",дима:"дмит",миша:"миха",толя:"анато",костя:"конс"};function getRoot(s){let w=s.toLowerCase().trim();if(w.length<=2)return w;let syn=baseSynonyms[w];if(syn)return syn;return w.substring(0,4)}const dict={ru:{title:"Посёлок Дарьинское",tab1:"Продажи",tab2:"Услуги",tab3:"Госслужбы",tab4:"Жители",search:"🔍 Поиск по справочнику...",call:"Позвонить",wa:"WhatsApp",clear:"Сбросить",add_btn:"➕ Добавить контакт / Нашли ошибку?",views:"Просмотры справочника (День / Месяц / Всего):",m_title:"Добро пожаловать!",m_text:"Прошу прощения, если чья-то фамилия или номер записаны неверно. Если вы нашли ошибку, нажмите на кнопку с треугольником (⚠️) на нужной карточке, чтобы прислать верные сведения.<br><br>💡 <b>Подсказка по поиску:</b> Введите любое имя или услугу. Поиск проверит все разделы разом! Если не можете найти человека по короткому имени (Паша, Женя), попробуйте ввести полное (Павел, Евгений).",m_btn:"Открыть справочник"},kz:{title:"Дарьинск ауылы",tab1:"Сату",tab2:"Қызметтер",tab3:"Мемлекеттік органдар",tab4:"Тұрғындар",search:"🔍 Анықтамалық бойынша іздеу...",call:"Қоңырау шалу",wa:"WhatsApp",clear:"Тазалау",add_btn:"➕ Контакт қосу / Қате таптыңыз ба?",views:"Анықтамалықты қарау (Күн / Ай / Барлығы):",m_title:"Қош келдіңіздер!",m_text:"Егер біреудің тегі немесе нөмірі қате жазылса, кешірім өтінеміз. Қате тапсаңыз, дұрыс мәліметтерді жіберу үшін қажетті карточкадағы үшбұрыш (⚠️) түймесін басыңыз.<br><br>💡 <b>Іздеу бойынша нұсқаулық:</b> Кез келген есімді немесе қызметті жазыңыз. Іздеу жүйесі барлық бөлімдерді бірден тексереді! Егер адамды қысқа есімімен таба алмасаңыз (Паша, Женя), оның толық есімін жазып көріңіз (Павел, Евгений).",m_btn:"Анықтамалықты ашу"}};function switchTab(t,e){document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active")),e.classList.add("active"),document.getElementById("tab1").style.display="none",document.getElementById("tab2").style.display="none",document.getElementById("tab3").style.display="none",document.getElementById("tab4").style.display="none",currentTabId="tab"+t,document.getElementById(currentTabId).style.display="grid",filterCards()}function filterCards(){let t=document.getElementById("searchInput").value.toLowerCase().trim();let words=t.split(" ").filter(w=>w.length>0);let b=document.getElementById("tabsBlock");if(words.length>0){b.style.display="none";document.getElementById("tab1").style.display="grid";document.getElementById("tab2").style.display="grid";document.getElementById("tab3").style.display="grid";document.getElementById("tab4").style.display="grid"}else{b.style.display="flex";document.getElementById("tab1").style.display=currentTabId==="tab1"?"grid":"none";document.getElementById("tab2").style.display=currentTabId==="tab2"?"grid":"none";document.getElementById("tab3").style.display=currentTabId==="tab3"?"grid":"none";document.getElementById("tab4").style.display=currentTabId==="tab4"?"grid":"none"}document.querySelectorAll(".card").forEach(t=>{let r=t.parentElement.id===currentTabId;if(words.length===0){if(r)t.classList.remove("hidden");else t.classList.add("hidden");return}let n=t.innerText||t.textContent;n=n.toLowerCase();let match=words.every(w=>{let root=getRoot(w);return n.includes(root)||n.includes(w)});if(match)t.classList.remove("hidden");else t.classList.add("hidden")})}function clearSearch(){document.getElementById("searchInput").value="",filterCards()}function setLang(t){currentLang=t;document.querySelectorAll('.lang-btn').forEach(t=>t.classList.remove('active'));if(event&&event.target&&event.target.classList)event.target.classList.add("active");document.querySelector('[data-translate="title"]').innerText=dict[t].title;document.querySelector('[data-translate="tab1"]').innerText=dict[t].tab1;document.querySelector('[data-translate="tab2"]').innerText=dict[t].tab2;document.querySelector('[data-translate="tab3"]').innerText=dict[t].tab3;document.querySelector('[data-translate="tab4"]').innerText=dict[t].tab4;document.querySelector('[data-translate="add_btn"]').innerText=dict[t].add_btn;document.querySelector('[data-translate="views"]').innerText=dict[t].views;document.querySelector('[data-translate="m_title"]').innerText=dict[t].m_title;document.querySelector('[data-translate="m_text"]').innerHTML=dict[t].m_text;document.querySelector('[data-translate="m_btn"]').innerText=dict[t].m_btn;document.getElementById("searchInput").placeholder=dict[t].search;document.querySelectorAll('[data-translate="call"]').forEach(e=>e.innerText=dict[t].call);document.querySelectorAll('[data-translate="wa"]').forEach(e=>e.innerText=dict[t].wa)};document.querySelectorAll(".card").forEach(card=>{let btns=card.querySelector(".buttons");if(btns){let callBtn=btns.querySelector(".btn-call");if(callBtn){let tel=callBtn.getAttribute("href");if(tel&&tel.includes("+")&&!tel.includes("+7711")){let p=tel.split("+")[1];if(p&&!card.querySelector(".btn-wa")){let waBtn=document.createElement("a");waBtn.href="https://wa.me"+p;waBtn.className="btn btn-wa";waBtn.setAttribute("data-translate","wa");waBtn.innerText="WhatsApp";btns.insertBefore(waBtn,btns.querySelector(".btn-err"))}}}}});let userLang=navigator.language||navigator.userLanguage;if(userLang.toLowerCase().startsWith('kk')||userLang.toLowerCase().startsWith('kz')){setTimeout(()=>{setLang('kz');document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'))},100)}
+let currentTabId='tab1',currentLang='ru';
+function closeModal(){document.getElementById('welcomeModal').style.display='none'}
+window.onscroll=function(){let b=document.getElementById('btnUp');if(document.body.scrollTop>200||document.documentElement.scrollTop>200){b.style.display='flex'}else{b.style.display='none'}};
+function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'})}
+
+async function loadData() {
+    try {
+        const response = await fetch('номера.txt');
+        const text = await response.text();
+        const lines = text.split('\n');
+        let t1=[], t2=[], t3=[], t4=[];
+        
+        lines.forEach(line => {
+            line = line.trim();
+            if (!line || line.split('|').length !== 6) return;
+            let parts = line.split('|').map(p => p.trim());
+            let [cat, name, phone, nums, desc, orient] = parts;
+            if (!cat || !phone) return;
+            
+            let c_low = cat.toLowerCase();
+            if (c_low.includes("госслужб") || c_low.includes("полици") || c_low.includes("медицин") || c_low.includes("аварийн") || c_low.includes("школ") || c_low.includes("загс") || c_low.includes("интернет") || c_low.includes("больниц") || c_low.includes("аптек") || c_low.includes("акимат")) {
+                t3.push(parts);
+            } else if (c_low.includes("жител")) {
+                t4.push(parts);
+            } else if (c_low.includes("магазин") || c_low.includes("продукт") || c_low.includes("выпечк") || c_low.includes("подарк") || c_low.includes("красот") || c_low.includes("корм") || c_low.includes("одежд") || c_low.includes("алкомаркет")) {
+                t1.push(parts);
+            } else {
+                t2.push(parts); // Септики, дрова, сварка, такси и все остальные мастера летят во вкладку Услуги!
+            }
+        });
+        
+        const s = (a, b) => a[1].localeCompare(b[1], 'ru');
+        t1.sort(s); t2.sort(s); t3.sort(s); t4.sort(s);
+        
+        document.getElementById('tab1').innerHTML = renderCards(t1);
+        document.getElementById('tab2').innerHTML = renderCards(t2);
+        document.getElementById('tab3').innerHTML = renderCards(t3);
+        document.getElementById('tab4').innerHTML = renderCards(t4, true);
+        filterCards();
+    } catch (e) { console.log("Ошибка загрузки базы данных"); }
+}
+
+function renderCards(data, is_res = false) {
+    let html = "";
+    data.forEach(p => {
+        let [cat, name, phone, nums, desc, orient] = p;
+        let cleanNums = phone.replace(/\D/g, '');
+        let waLink = `https://wa.me{cleanNums}`;
+        let errLink = `https://wa.me! ${cat}, ${name}, ${phone}`;
+        
+        let waBtn = (phone.startsWith("771131") || cleanNums.length <= 5) ? 
+            '<span class="btn" style="background:#e2e8f0;color:#94a3b8">Городской</span>' : 
+            `<a href="${waLink}" class="btn btn-wa" data-translate="wa">WhatsApp</a>`;
+            
+        let title = is_res ? `${name}` : orient;
+        let sub = is_res ? orient : `${name}`;
+            
+        html += `<div class="card" data-cat="${cat.toLowerCase()}" data-orient="${orient.toLowerCase()}" data-name="${name.toLowerCase()}" data-desc="${desc.toLowerCase()}" data-phone="${cleanNums}">
+            <div class="cat" data-lang-cat="${cat}">${cat}</div>
+            <div class="name">${title}</div>
+            ${sub ? `<div class="sub-title" style="font-size:13px;color:#64748b;margin-bottom:5px;">${sub}</div>` : ''}
+            <div class="desc">${desc}</div>
+            <div class="buttons">
+                <a href="tel:+${cleanNums}" class="btn btn-call" data-translate="call">Позвонить</a>
+                ${waBtn}
+                <a href="${errLink}" class="btn-err">⚠️</a>
+            </div>
+        </div>`;
+    });
+    return html;
+}
+
+const dict={ru:{title:"Посёлок Дарьинское",tab1:"Продажи",tab2:"Услуги",tab3:"Госслужбы",tab4:"Жители",search:"🔍 Поиск по справочнику...",call:"Позвонить",wa:"WhatsApp",clear:"Сбросить",add_btn:"➕ Добавить контакт / Нашли ошибку?",views:"Просмотны справочника:",m_title:"Добро пожаловать!",m_text:"Прошу прощения, если чья-то фамилия или номер записаны неверно. Если вы нашли ошибку, нажмите на кнопку с треугольником (⚠️) на нужной карточке, чтобы прислать верные сведения.<br><br>💡 <b>Подсказка по поиску:</b> Введите любое имя или услугу. Поиск проверит все разделы разом! Если не можете найти человека по короткому имени (Паша, Женя), попробуйте ввести полное (Павел, Евгений).",m_btn:"Открыть справочник / Анықтамалықты ашу"},kz:{title:"Дарьинск ауылы",tab1:"Сату",tab2:"Қызметтер",tab3:"Мемлекеттік органдар",tab4:"Тұрғындар",search:"🔍 Анықтамалық бойынша іздеу...",call:"Қоңырау шалу",wa:"WhatsApp",clear:"Тазалау",add_btn:"➕ Контакт қосу / Қате таптыңыз ба?",views:"Анықтамалықты қарау:",m_title:"Қош келдіңіздер!",m_text:"Егер біреудің тегі немесе нөмірі қате жазылса, кешірім өтінеміз. Қате тапсаңыз, дұрыс мәліметтерді жіберуіңізді сұраймыз.<br><br>💡 <b>Іздеу бойынша нұсқаулық:</b> Кез келген есімді немесе қызметті жазыңыз. Іздеу жүйесі барлық бөлімдерді бірден тексереді!",m_btn:"Анықтамалықты ашу"}};
+function switchTab(t,e){document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));e.classList.add("active");document.getElementById("tab1").style.display="none";document.getElementById("tab2").style.display="none";document.getElementById("tab3").style.display="none";document.getElementById("tab4").style.display="none";currentTabId="tab"+t;document.getElementById(currentTabId).style.display="grid";filterCards()}
+function filterCards(){let t=document.getElementById("searchInput").value.toLowerCase().trim();let words=t.split(" ").filter(w=>w.length>0);let b=document.getElementById("tabsBlock");if(words.length>0){b.style.display="none";document.getElementById("tab1").style.display="grid";document.getElementById("tab2").style.display="grid";document.getElementById("tab3").style.display="grid";document.getElementById("tab4").style.display="grid"}else{b.style.display="flex";document.getElementById("tab1").style.display=currentTabId==="tab1"?"grid":"none";document.getElementById("tab2").style.display=currentTabId==="tab2"?"grid":"none";document.getElementById("tab3").style.display=currentTabId==="tab3"?"grid":"none";document.getElementById("tab4").style.display=currentTabId==="tab4"?"grid":"none"}document.querySelectorAll(".card").forEach(t=>{let r=t.parentElement.id===currentTabId;if(words.length===0){if(r)t.classList.remove("hidden");else t.classList.add("hidden");return}let n=t.getAttribute("data-cat")+" "+t.getAttribute("data-orient")+" "+t.getAttribute("data-name")+" "+t.getAttribute("data-desc")+" "+t.getAttribute("data-phone");n=n.toLowerCase();let match=words.every(w=>{let baseSynonyms={саня:"алекс",санек:"алекс",санёк:"алекс",шурик:"алекс",леха:"алекс","лёха":"алекс",лешка:"алекс",алеша:"алекс",серега:"серг","серёга":"серг",сережа:"серг","серёжа":"серг",паша:"паве",вова:"влад",володя:"влад",слава:"влад",славик:"влад",баха:"бахы",баке:"бахы",мура:"мура",сека:"сери",секе:"сери",сако:"сама",саке:"самат",коля:"нико",женя:"евге",дима:"дмит",миша:"миха",толя:"анато",костя:"конс"};let root=w.substring(0,4);let syn=baseSynonyms[w];if(syn)root=syn;return n.includes(root)||n.includes(w)});if(match)t.classList.remove("hidden");else t.classList.add("hidden")})}
+function clearSearch(){document.getElementById("searchInput").value="",filterCards()}
+function setLang(t){currentLang=t;document.querySelectorAll('.lang-btn').forEach(t=>t.classList.remove('active'));if(event&&event.target&&event.target.classList)event.target.classList.add("active");document.querySelector('[data-translate="title"]').innerText=dict[t].title;document.querySelector('[data-translate="tab1"]').innerText=dict[t].tab1;document.querySelector('[data-translate="tab2"]').innerText=dict[t].tab2;document.querySelector('[data-translate="tab3"]').innerText=dict[t].tab3;document.querySelector('[data-translate="tab4"]').innerText=dict[t].tab4;document.querySelector('[data-translate="add_btn"]').innerText=dict[t].add_btn;document.querySelector('[data-translate="views"]').innerText=dict[t].views;document.querySelector('[data-translate="m_title"]').innerText=dict[t].m_title;document.querySelector('[data-translate="m_text"]').innerHTML=dict[t].m_text;document.querySelector('[data-translate="m_btn"]').innerText=dict[t].m_btn;document.getElementById("searchInput").placeholder=dict[t].search;document.querySelectorAll('[data-translate="call"]').forEach(e=>e.innerText=dict[t].call);document.querySelectorAll('[data-translate="wa"]').forEach(e=>e.innerText=dict[t].wa);document.querySelectorAll("[data-lang-cat]").forEach(e=>{let r=e.getAttribute("data-lang-cat").toLowerCase();e.innerText=dict[t][r]||e.getAttribute("data-lang-cat")})};document.addEventListener("DOMContentLoaded", loadData);
