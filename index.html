@@ -1,3 +1,383 @@
-<!DOCTYPE html><html class="notranslate" lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Справочник Дарьинское</title><style>*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}body{background:#f1f5f9;color:#1e293b;margin:0;padding:12px;display:flex;flex-direction:column;min-height:100vh;touch-action:pan-y}.header-container{display:flex;justify-content:space-between;align-items:center;background:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.05);margin-bottom:12px}h1{margin:0;font-size:18px;color:#0f172a;font-weight:700}.search-container{margin-bottom:12px;display:flex;gap:6px}.search-input{flex:1;padding:12px 16px;font-size:15px;border:2px solid #cbd5e1;border-radius:12px;outline:none}.search-input:focus{border-color:#2563eb;background:#fff}.search-clear{background:#ef4444;color:#fff;border:none;padding:0 14px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;display:none;user-select:none}.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;user-select:none}.tab{background:#fff;border:1px solid #cbd5e1;padding:8px 14px;font-size:13px;border-radius:20px;white-space:nowrap;cursor:pointer;color:#475569}.tab.active{background:#0f172a;color:#fff;border-color:#0f172a;font-weight:700}.cards{display:grid;grid-template-columns:1fr;gap:10px}.card{background:#fff;padding:14px;border-radius:14px;border:1px solid #e2e8f0;display:flex;flex-direction:column}.cat{font-size:11px;padding:3px 8px;border-radius:6px;align-self:flex-start;font-weight:700;margin-bottom:6px;text-transform:uppercase;background:#e0f2fe;color:#0369a1}.name{font-size:16px;font-weight:700;color:#0f172a;margin-bottom:4px}.sub-title{font-size:13px;color:#64748b;margin-bottom:5px}.desc{font-size:13px;color:#475569;line-height:1.4;margin-bottom:12px;flex-grow:1}.buttons{display:flex;gap:6px;align-items:center}.btn{flex:1;text-align:center;padding:10px;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;color:#fff}.btn-call{background:#2563eb}.btn-wa{background:#16a34a}.btn-err{background:#ef4444;color:#fff;padding:8px 10px;border-radius:8px;text-decoration:none}.btn-add-global{display:block;width:100%;text-align:center;background:#2563eb;color:#fff;padding:14px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;margin-bottom:12px;box-shadow:0 2px 4px rgba(37,99,235,0.2)}.footer-counter{margin-top:auto;padding:16px 0 4px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:11px;color:#64748b;border-top:1px solid #e2e8f0}.btn-up{position:fixed;bottom:20px;right:20px;background:#0f172a;color:#fff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:none;z-index:99}.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1000}.modal-content{background:#fff;padding:20px;border-radius:16px;width:90%;max-width:400px;box-shadow:0 4px 10px rgba(0,0,0,0.15)}.modal-h{margin:0 0 10px 0;font-size:16px;color:#0f172a;font-weight:700}.modal-p{font-size:13px;color:#475569;line-height:1.5;margin:0 0 16px 0}.modal-btn{width:100%;background:#0f172a;color:#fff;border:none;padding:12px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer}.lang-switch{display:flex;gap:4px}.lang-btn{background:#f1f5f9;border:1px solid #cbd5e1;padding:4px 10px;font-size:12px;font-weight:700;border-radius:6px;cursor:pointer}.lang-btn.active{background:#2563eb;color:#fff;border-color:#2563eb}</style></head>
-<body><div id="welcomeModal" class="modal"><div class="modal-content"><h3 class="modal-h" data-translate="m_title">Добро пожаловать!</h3><p class="modal-p" data-translate="m_text">Прошу прощения, если чья-то фамилия или номер записаны неверно. Если вы нашли ошибку, нажмите на кнопку с треугольником (⚠️) на нужной карточке, чтобы прислать верные сведения.<br><br>💡 <b>Подсказка по поиску:</b> Введите любое имя или услугу. Поиск проверит все разделы разом! Если не можете найти человека по короткому имени (Паша, Женя), попробуйте ввести полное (Павел, Евгений).</p><button class="modal-btn" onclick="closeModal()" data-translate="m_btn">Открыть справочник / Анықтамалықты ашу</button></div></div><div id="addModal" class="modal" style="display:none"><div class="modal-content"><h3 class="modal-h">Добавить контакт / Контакт қосу</h3><form id="addForm" onsubmit="sendAddForm(event)"><label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Категория / Санат *</label><select id="formCat" onchange="toggleCustomCat()" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;" required><option value="Продажи">Продажи (Магазины, продукты, корма, аптеки)</option><option value="Услуги">Услуги (Септики, сварка, дрова, такси, бани)</option><option value="Госслужбы">Госслужбы (Акимат, полиция, ЦОН, школы, больница, здоровье)</option><option value="Жители">Жители (Жители посёлка)</option><option value="custom">➕ Свой вариант / Өз нұсқасы</option></select><div id="customCatBlock" style="display:none;"><label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Ваша категория / Санатты жазыңыз *</label><input type="text" id="formCustomCat" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;"></div><label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Имя Фамилия / Аты-жөнi *</label><input type="text" id="formName" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;" required><label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Телефон / Телефон нөмiрi *</label><input type="text" id="formPhone" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;" placeholder="77051234567" required><label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Описание услуги / Сипаттамасы *</label><textarea id="formDesc" class="search-input" style="width:100%;margin-bottom:12px;padding:8px 12px;height:60px;resize:none;" required></textarea><div style="display:flex;gap:6px;"><button type="submit" class="modal-btn" style="background:#16a34a;">Отправить в WhatsApp</button><button type="button" class="modal-btn" style="background:#ef4444;" onclick="closeAddModal()">Отмена</button></div></form></div></div><div class="header-container"><h1 data-translate="title">Посёлок Дарьинское</h1><div class="lang-switch"><button class="lang-btn active" onclick="setLang('ru')">RU</button><button class="lang-btn" onclick="setLang('kz')">KZ</button></div></div><div class="search-container"><input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по справочнику..." oninput="filterCards()"><button id="searchClear" class="search-clear" onclick="clearSearch()" data-translate="clear">Сбросить</button></div><button class="btn-add-global" onclick="openAddModal()" data-translate="add_btn">➕ Добавить контакт / Нашли ошибку?</button><div class="tabs" id="tabsBlock"><div class="tab active" onclick="switchTab(1,this)" data-translate="tab1">Продажи</div><div class="tab" onclick="switchTab(2,this)" data-translate="tab2">Услуги</div><div class="tab" onclick="switchTab(3,this)" data-translate="tab3">Госслужбы</div><div class="tab" onclick="switchTab(4,this)" data-translate="tab4">Жители</div></div><div class="cards" id="tab1"></div><div class="cards" id="tab2" style="display:none"></div><div class="cards" id="tab3" style="display:none"></div><div class="cards" id="tab4" style="display:none"></div><div id="btnUp" class="btn-up" onclick="scrollToTop()">▲</div><div class="footer-counter"><span data-translate="views">Просмотры справочника (День / Месяц / Всего):</span><div id="sfcln4k6n7pzmftz17sh5fexclwgyjeyt2j"></div><script type="text/javascript" src="https://stat.ovh"></script></div>
-<script src="poisk.js?v=2026"></script></body></html>
+<!DOCTYPE html>
+<html class="notranslate" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Справочник Дарьинское</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+        body {
+            background: #f1f5f9;
+            color: #1e293b;
+            margin: 0;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            touch-action: pan-y;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 12px 16px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
+            margin-bottom: 12px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 18px;
+            color: #0f172a;
+            font-weight: 700;
+        }
+              .search-container {
+            margin-bottom: 12px;
+            display: flex;
+            gap: 6px;
+        }
+        .search-input {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            outline: none;
+        }
+        .search-input:focus {
+            border-color: #2563eb;
+            background: #fff;
+        }
+        .search-clear {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 0 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: none;
+            user-select: none;
+        }
+        .tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            margin-bottom: 12px;
+            user-select: none;
+        }
+        .tab {
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            padding: 8px 14px;
+            font-size: 13px;
+            border-radius: 20px;
+            white-space: nowrap;
+            cursor: pointer;
+            color: #475569;
+        }
+        .tab.active {
+            background: #0f172a;
+            color: #fff;
+            border-color: #0f172a;
+            font-weight: 700;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        .card {
+            background: #fff;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+        .cat {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            align-self: flex-start;
+            font-weight: 700;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+        .name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+        .sub-title {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+        .desc {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+        .buttons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .btn {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 8px;
+            color: #fff;
+        }
+        .btn-call { background: #2563eb; }
+        .btn-wa { background: #16a34a; }
+        .btn-err {
+            background: #ef4444;
+            color: #fff;
+            padding: 8px 10px;
+            border-radius: 8px;
+            text-decoration: none;
+          }
+              .btn-add-global {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #2563eb;
+            color: #fff;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(37,99,235,0.2);
+        }
+        .footer-counter {
+            margin-top: auto;
+            padding: 16px 0 4px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+        }
+        .btn-up {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0f172a;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 99;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .modal-h {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #0f172a;
+            font-weight: 700;
+        }
+        .modal-p {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.5;
+            margin: 0 0 16px 0;
+        }
+        .modal-btn {
+            width: 100%;
+            background: #0f172a;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .lang-switch {
+            display: flex;
+            gap: 4px;
+        }
+        .lang-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .lang-btn.active {
+            background: #2563eb;
+            color: #fff;
+            border-color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <div id="welcomeModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-h" data-translate="m_title">Добро пожаловать!</h3>
+            <p class="modal-p" data-translate="m_text">Прошу прощения, если чья-то фамилия или номер записаны неверно. Если вы нашли ошибку, нажмите на кнопку с треугольником (⚠️) на нужной карточке, чтобы прислать верные сведения.<br><br>💡 <b>Подсказка по поиску:</b> Введите любое имя или услугу. Поиск проверит все разделы разом! Если не можете найти человека по короткому имени (Паша, Женя), попробуйте ввести полное (Павел, Евгений).</p>
+            <button class="modal-btn" onclick="closeModal()" data-translate="m_btn">Открыть справочник / Анықтамалықты ашу</button>
+        </div>
+    </div>
+
+    <div id="addModal" class="modal" style="display:none">
+        <div class="modal-content">
+            <h3 class="modal-h">Добавить контакт / Контакт қосу</h3>
+            <form id="addForm" onsubmit="sendAddForm(event)">
+                <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Категория / Санат *</label>
+                <select id="formCat" onchange="toggleCustomCat()" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;" required>
+                    <option value="Продажи">Продажи (Магазины, продукты, корма, аптеки)</option>
+                    <option value="Услуги">Услуги (Септики, сварка, дрова, такси, бани)</option>
+                    <option value="Госслужбы">Госслужбы (Акимат, полиция, ЦОН, школы, больница, здоровье)</option>
+                    <option value="Жители">Жители (Жители посёлка)</option>
+                    <option value="custom">➕ Свой вариант / Өз нұсқасы</option>
+                </select>
+                <div id="customCatBlock" style="display:none;">
+                    <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Ваша категория / Санатты жазыңыз *</label>
+                    <input type="text" id="formCustomCat" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;">
+                </div>
+                <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Имя Фамилия / Аты-жөнi *</label>
+                <input type="text" id="formName" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;" required>
+                <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Телефон / Телефон нөмiрi *</label>
+                <input type="text" id="formPhone" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;" placeholder="77051234567" required>
+                <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Описание услуги / Сипаттамасы *</label>
+                <textarea id="formDesc" class="search-input" style="width:100%;margin-bottom:12px;padding:8px 12px;height:60px;resize:none;" required></textarea>
+                <div style="display:flex;gap:6px;">
+                    <button type="submit" class="modal-btn" style="background:#16a34a;">Отправить в WhatsApp</button>
+                    <button type="button" class="modal-btn" style="background:#ef4444;" onclick="closeAddModal()">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="header-container">
+        <h1 data-translate="title">Посёлок Дарьинское</h1>
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="setLang('ru')">RU</button>
+            <button class="lang-btn" onclick="setLang('kz')">KZ</button>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по справочнику..." oninput="filterCards()">
+        <button id="searchClear" class="search-clear" onclick="clearSearch()" data-translate="clear">Сбросить</button>
+    </div>
+
+    <button class="btn-add-global" onclick="openAddModal()" data-translate="add_btn">➕ Добавить контакт / Нашли ошибку?</button>
+
+    <div class="tabs" id="tabsBlock">
+        <div class="tab active" onclick="switchTab(1,this)" data-translate="tab1">Продажи</div>
+        <div class="tab" onclick="switchTab(2,this)" data-translate="tab2">Услуги</div>
+        <div class="tab" onclick="switchTab(3,this)" data-translate="tab3">Госслужбы</div>
+        <div class="tab" onclick="switchTab(4,this)" data-translate="tab4">Жители</div>
+    </div>
+
+    <div class="cards" id="tab1"></div>
+    <div class="cards" id="tab2" style="display:none"></div>
+    <div class="cards" id="tab3" style="display:none"></div>
+    <div class="cards" id="tab4" style="display:none"></div>
+
+    <div id="btnUp" class="btn-up" onclick="scrollToTop()">▲</div>
+
+    <div class="footer-counter">
+        <span data-translate="views">Просмотры справочника (День / Месяц / Всего):</span>
+        <div id="sfcln4k6n7pzmftz17sh5fexclwgyjeyt2j"></div>
+        <script type="text/javascript" src="https://stat.ovh"></script>
+    </div>
+        <script>
+        let currentTabId = 'tab1', currentLang = 'ru';
+        function closeModal() { document.getElementById('welcomeModal').style.display = 'none'; }
+        function openAddModal() { document.getElementById('addModal').style.display = 'flex'; }
+        function closeAddModal() { document.getElementById('addForm').reset(); document.getElementById('customCatBlock').style.display = 'none'; document.getElementById('addModal').style.display = 'none'; }
+        function toggleCustomCat() { let s = document.getElementById('formCat').value; document.getElementById('customCatBlock').style.display = (s === 'custom') ? 'block' : 'none'; }
+        function sendAddForm(e) { e.preventDefault(); let cat = document.getElementById('formCat').value; if (cat === 'custom') cat = document.getElementById('formCustomCat').value.trim(); let name = document.getElementById('formName').value.trim(); let phone = document.getElementById('formPhone').value.trim(); let desc = document.getElementById('formDesc').value.trim(); if (!cat || !name || !phone || !desc) return; let cleanPhone = phone.replace(/\D/g, ''); let lineTxt = `${cat}|${name}|${phone}||${desc}|`; let msg = encodeURIComponent(`Здравствуйте! Добавьте пожалуйста контакт в справочник:\n\n${lineTxt}`); window.open(`https://wa.me{msg}`, '_blank'); closeAddModal(); }
+        window.onscroll = function () { let b = document.getElementById('btnUp'); if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) { b.style.display = 'flex'; } else { b.style.display = 'none'; } };
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        async function loadData() { try { const response = await fetch('baza.txt?v=' + new Date().getTime()); const text = await response.text(); const lines = text.split('\n'); let t1 = [], t2 = [], t3 = [], t4 = []; lines.forEach(line => { line = line.trim(); if (!line || !line.includes('|')) return; let parts = line.split('|').map(p => p.trim()); while (parts.length < 6) { parts.push(""); } let [cat, name, phone, nums, desc, orient] = parts; if (!cat || !phone) return; let c_low = cat.toLowerCase(); if (c_low.includes("госслужб") || c_low.includes("полици") || c_low.includes("медицин") || c_low.includes("аварийн") || c_low.includes("школ") || c_low.includes("загс") || c_low.includes("интернет") || c_low.includes("больниц") || c_low.includes("аптек") || c_low.includes("акимат") || c_low.includes("здоровь")) { t3.push(parts); } else if (c_low.includes("жител")) { t4.push(parts); } else if (c_low.includes("магазин") || c_low.includes("продукт") || c_low.includes("выпечк") || c_low.includes("подарк") || c_low.includes("красот") || c_low.includes("корм") || c_low.includes("одежд") || c_low.includes("алкомаркет") || c_low.includes("продаж")) { t1.push(parts); } else { t2.push(parts); } }); const s = (a, b) => (a[1] || "").localeCompare(b[1] || "", "ru"); t1.sort(s); t2.sort(s); t3.sort(s); t4.sort(s); document.getElementById('tab1').innerHTML = renderCards(t1); document.getElementById('tab2').innerHTML = renderCards(t2); document.getElementById('tab3').innerHTML = renderCards(t3); document.getElementById('tab4').innerHTML = renderCards(t4, true); filterCards(); } catch (e) { console.log("Ошибка базы"); } }
+        function renderCards(data, is_res = false) { let html = ""; data.forEach(p => { let [cat, name, phone, nums, desc, orient] = p; let cleanNums = phone.replace(/\D/g, ''); let waLink = `https://wa.me{cleanNums}`; let errLink = `https://wa.me! ${cat}, ${name}, ${phone}`; let waBtn = (cleanNums.startsWith("771131") || cleanNums.length <= 6) ? '<span class="btn" style="background:#e2e8f0;color:#94a3b8">Городской</span>' : `<a href="${waLink}" class="btn btn-wa" data-translate="wa">WhatsApp</a>`; let title = name || cat; let sub = is_res ? orient : desc; let cardDesc = is_res ? desc : orient; html += `<div class="card" data-cat="${cat.toLowerCase()}" data-orient="${orient.toLowerCase()}" data-name="${name.toLowerCase()}" data-desc="${desc.toLowerCase()}" data-phone="${cleanNums}"><div class="cat" data-lang-cat="${cat}">${cat}</div><div class="name">${title}</div>${sub ? `<div class="sub-title" style="font-size:13px;color:#64748b;margin-bottom:5px;">${sub}</div>` : ''}${cardDesc ? `<div class="desc">${cardDesc}</div>` : ''}<div class="buttons"><a href="tel:+${cleanNums}" class="btn btn-call" data-translate="call">Позвонить</a>${waBtn}<a href="${errLink}" class="btn-err">⚠️</a></div></div>`; }); return html; }
+                  const dict = {
+            ru: { title: "Посёлок Дарьинское", tab1: "Продажи", tab2: "Услуги", tab3: "Госслужбы", tab4: "Жители", search: "🔍 Поиск по справочнику...", call: "Позвонить", wa: "WhatsApp", clear: "Сбросить", add_btn: "➕ Добавить контакт / Нашли ошибку?", views: "Просмотры справочника:", m_title: "Добро пожаловать!", m_text: "Прошу прощения, если чья-то фамилия или номер записаны неверно. Если вы нашли ошибку, нажмите на кнопку с треугольником (⚠️) на нужной карточке, чтобы прислать верные сведения.<br><br>💡 <b>Подсказка по поиску:</b> Введите любое имя или услугу. Поиск проверит все разделы разом! Если не можете найти человека по короткому имени (Паша, Женя), попробуйте ввести полное (Павел, Евгений).", m_btn: "Открыть справочник / Анықтамалықты ашу" },
+            kz: { title: "Дарьинск ауылы", tab1: "Сату", tab2: "Қызметтер", tab3: "Мемлекеттік органдар", tab4: "Тұрғындар", search: "🔍 Анықтамалық бойынша іздеу...", call: "Қоңырау шалу", wa: "WhatsApp", clear: "Тазалау", add_btn: "➕ Контакт қосу / Қате таптыңыз ба?", views: "Анықтамалықты қарау:", m_title: "Қош келдіңіздер!", m_text: "Егер біреудің тегі немесе нөмірі қате жазылса, кешірім өтінеміз. Қате тапсаңыз, дұрыс мәліметтерді жіберуіңізді сұраймыз.<br><br>💡 <b>Іздеу бойынша нұсқаулық:</b> Кез келген есімді немесе қызметті жазыңыз. Издеу жүйесі барлық бөлімдерді бірден тексереді!", m_btn: "Анықтамалықты ашу" }
+        };
+        function switchTab(t, e) { document.querySelectorAll(".tab").forEach(t => t.classList.remove("active")); e.classList.add("active"); document.getElementById("tab1").style.display = "none"; document.getElementById("tab2").style.display = "none"; document.getElementById("tab3").style.display = "none"; document.getElementById("tab4").style.display = "none"; currentTabId = "tab" + t; document.getElementById(currentTabId).style.display = "grid"; filterCards(); }
+        function filterCards() {
+            let t = document.getElementById("searchInput").value.toLowerCase().trim();
+            let words = t.split(" ").filter(w => w.length > 0);
+            let c = document.getElementById("searchClear"), b = document.getElementById("tabsBlock");
+            if (words.length > 0) { c.style.display = "block"; b.style.display = "none"; document.getElementById("tab1").style.display = "grid"; document.getElementById("tab2").style.display = "grid"; document.getElementById("tab3").style.display = "grid"; document.getElementById("tab4").style.display = "grid"; }
+            else { c.style.display = "none"; b.style.display = "flex"; document.getElementById("tab1").style.display = currentTabId === "tab1" ? "grid" : "none"; document.getElementById("tab2").style.display = currentTabId === "tab2" ? "grid" : "none"; document.getElementById("tab3").style.display = currentTabId === "tab3" ? "grid" : "none"; document.getElementById("tab4").style.display = currentTabId === "tab4" ? "grid" : "none"; }
+            document.querySelectorAll(".card").forEach(t => {
+                let r = t.parentElement.id === currentTabId;
+                if (words.length === 0) { if (r) t.classList.remove("hidden"); else t.classList.add("hidden"); return; }
+                let n = t.getAttribute("data-cat") + " " + t.getAttribute("data-orient") + " " + t.getAttribute("data-name") + " " + t.getAttribute("data-desc") + " " + t.getAttribute("data-phone"); n = n.toLowerCase();
+                let match = words.every(w => {
+                    let baseSynonyms = { саня: "алекс", санек: "алекс", санёк: "алекс", шурик: "алекс", леха: "алекс", "лёха": "алекс", лешка: "алекс", алеша: "алекс", серега: "серг", "серёга": "серг", сережа: "серг", "серёжа": "серг", паша: "паве", вова: "влад", володя: "влад", слава: "влад", славик: "влад", баха: "бахы", баке: "бахы", мура: "мура", сека: "сери", секе: "сери", сако: "сама", саке: "самат", коля: "нико", женя: "евге", дима: "дмит", миша: "миха", толя: "анато", костя: "конс" };
+                    let root = w.substring(0, 4); let syn = baseSynonyms[w]; if (syn) root = syn; return n.includes(root) || n.includes(w);
+                });
+                if (match) t.classList.remove("hidden"); else t.classList.add("hidden");
+            });
+        }
+        function clearSearch() { document.getElementById("searchInput").value = "", filterCards(); }
+        function setLang(t) {
+            currentLang = t; document.querySelectorAll('.lang-btn').forEach(t => t.classList.remove('active')); if (event && event.target && event.target.classList) event.target.classList.add("active");
+            document.querySelector('[data-translate="title"]').innerText = dict[t].title; document.querySelector('[data-translate="tab1"]').innerText = dict[t].tab1; document.querySelector('[data-translate="tab2"]').innerText = dict[t].tab2; document.querySelector('[data-translate="tab3"]').innerText = dict[t].tab3; document.querySelector('[data-translate="tab4"]').innerText = dict[t].tab4; document.querySelector('[data-translate="add_btn"]').innerText = dict[t].add_btn; document.querySelector('[data-translate="views"]').innerText = dict[t].views; document.querySelector('[data-translate="m_title"]').innerText = dict[t].m_title; document.querySelector('[data-translate="m_text"]').innerHTML = dict[t].m_text; document.querySelector('[data-translate="m_btn"]').innerText = dict[t].m_btn; document.getElementById("searchInput").placeholder = dict[t].search;
+            document.querySelectorAll('[data-translate="call"]').forEach(e => e.innerText = dict[t].call); document.querySelectorAll('[data-translate="wa"]').forEach(e => e.innerText = dict[t].wa);
+            document.querySelectorAll("[data-lang-cat]").forEach(e => { let r = e.getAttribute("data-lang-cat").toLowerCase(); e.innerText = dict[t][r] || e.getAttribute("data-lang-cat"); });
+        }
+        let touchStartX = 0, touchEndX = 0; document.addEventListener('touchstart', e => { touchStartX = e.changedTouches.screenX; }, false); document.addEventListener('touchend', e => { touchEndX = e.changedTouches.screenX; handleSwipe(); }, false);
+        function handleSwipe() { let d = document.getElementById("searchInput").value.trim(); if (d.length > 0) return; let s = touchStartX - touchEndX; let t = ['tab1', 'tab2', 'tab3', 'tab4']; let idx = t.indexOf(currentTabId); if (Math.abs(s) > 60) { if (s > 0 && idx < 3) { let nextTab = document.querySelectorAll(".tab")[idx + 1]; switchTab(idx + 2, nextTab); } if (s < 0 && idx > 0) { let prevTab = document.querySelectorAll(".tab")[idx - 1]; switchTab(idx, prevTab); } } }
+        document.addEventListener("DOMContentLoaded", () => { loadData(); let u = navigator.language || navigator.userLanguage; if (u.toLowerCase().startsWith('kk') || u.toLowerCase().startsWith('kz')) { setTimeout(() => { setLang('kz'); document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active')); }, 100); } });
+    </script>
+</body>
+</html>
