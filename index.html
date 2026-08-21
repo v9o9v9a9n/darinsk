@@ -6,54 +6,72 @@
     <title>Посёлок Дарьинское</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background: #f4f6f9; color: #333; padding-bottom: 30px; }
+        body { background: #f4f6f9; color: #333; padding-bottom: 30px; transition: background 0.3s, color 0.3s; -webkit-tap-highlight-color: transparent; }
         
-        header { background: #fff; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 12px; }
+        /* Ручной ночной режим по кнопке */
+        body.dark-mode { background: #1c1b1f; color: #e0e0e0; }
+        body.dark-mode header { background: #2c2b30; }
+        body.dark-mode input#searchInput { background: #3c3b40; border-color: #0b66ff; color: #fff; }
+        body.dark-mode .card { background: #2c2b30; border-color: #444; }
+        body.dark-mode .card-title { color: #fff; }
+        body.dark-mode .card-phone-line { background: #3c3b40; color: #ccc; border-left-color: #0b66ff; }
+        body.dark-mode .tab { background: #3c3b40; color: #ccc; }
+        body.dark-mode .tab.active { background: #0b66ff; color: #fff; }
+        body.dark-mode .modal-content { background: #2c2b30; color: #fff; }
+        body.dark-mode .form-group input, body.dark-mode .form-group select, body.dark-mode .form-group textarea { background: #3c3b40; color: #fff; border-color: #555; }
+
+        header { background: #fff; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 12px; transition: background 0.3s; }
         .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .title-site { font-size: 18px; font-weight: bold; color: #222; }
+        body.dark-mode .title-site { color: #fff; }
         
         .search-row { display: flex; gap: 8px; margin-bottom: 10px; }
-        input#searchInput { flex: 1; padding: 12px 15px; border: 2px solid #007bff; border-radius: 8px; outline: none; font-size: 16px; background: #fff; }
-        .btn-reset { background: #dc3545; color: #fff; border: none; border-radius: 8px; padding: 0 15px; font-size: 15px; font-weight: bold; cursor: pointer; }
+        input#searchInput { flex: 1; padding: 12px 15px; border: 2px solid #0b66ff; border-radius: 12px; outline: none; font-size: 16px; background: #fff; }
+        .btn-reset { display: none; background: #ff4d4d; color: #fff; border: none; border-radius: 12px; padding: 0 15px; font-size: 15px; font-weight: bold; cursor: pointer; animation: fadeIn 0.2s ease; }
         
-        .btn-action-main { display: block; width: 100%; background: #007bff; color: #fff; border: none; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 500; text-align: center; cursor: pointer; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,123,255,0.3); }
+        .btn-action-main { display: block; width: 100%; background: #0b66ff; color: #fff; border: none; border-radius: 12px; padding: 12px; font-size: 15px; font-weight: 500; text-align: center; cursor: pointer; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(11,102,255,0.3); }
 
         .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
         .tabs::-webkit-scrollbar { display: none; }
-        .tab { padding: 8px 14px; border-radius: 20px; background: #e4e6eb; font-size: 13px; font-weight: bold; cursor: pointer; border: none; white-space: nowrap; color: #444; }
-        .tab.active { background: #007bff; color: #fff; }
+        .tab { padding: 8px 14px; border-radius: 20px; background: #e4e6eb; font-size: 13px; font-weight: bold; cursor: pointer; border: none; white-space: nowrap; color: #444; transition: 0.2s; }
+        .tab.active { background: #0b66ff; color: #fff; }
 
-        .lang-panel { display: flex; gap: 5px; background: #eee; padding: 3px; border-radius: 6px; }
-        .lang-btn { padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; }
-        .lang-btn.active { background: #007bff; color: #fff; }
+        .lang-panel { display: flex; gap: 5px; background: #eee; padding: 3px; border-radius: 6px; align-items: center; }
+        body.dark-mode .lang-panel { background: #3c3b40; }
+        .lang-btn { padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; color: #333; }
+        body.dark-mode .lang-btn { color: #ccc; }
+        .lang-btn.active { background: #0b66ff; color: #fff; }
 
         #content { padding: 12px; display: flex; flex-direction: column; gap: 12px; }
         
-        /* Дизайн карточек из первых двух вариантов */
-        .card { background: #fff; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 6px; border: 1px solid #eef2f5; }
-        .card-tag { display: inline-block; self-content: flex-start; background: #e1f5fe; color: #0288d1; font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; width: max-content; }
-        .card-title { font-size: 17px; font-weight: bold; color: #111; margin-top: 2px; }
+        .card { background: #fff; border-radius: 16px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 6px; border: 1px solid #e2e8f0; animation: fadeIn 0.3s ease; word-wrap: break-word; word-break: break-word; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .card-tag { display: inline-block; background: #e1f5fe; color: #0288d1; font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; width: max-content; }
+        .card-title { font-size: 18px; font-weight: bold; color: #111; margin-top: 2px; line-height: 1.3; }
         .card-desc { font-size: 14px; color: #666; line-height: 1.4; }
-        .card-phone-line { font-size: 13px; color: #555; background: #f8f9fa; padding: 6px 10px; border-radius: 6px; border-left: 3px solid #ccc; font-family: monospace; font-weight: bold; margin-top: 2px; }
+        body.dark-mode .card-desc { color: #aaa; }
+        .card-phone-line { font-size: 14px; color: #555; background: #f8f9fa; padding: 8px 12px; border-radius: 8px; border-left: 3px solid #ccc; font-family: monospace; font-weight: bold; margin-top: 2px; }
 
-        /* Компактные кнопки со сплошной заливкой */
-        .card-actions { display: flex; gap: 8px; margin-top: 6px; }
-        .btn-ui { flex: 1; padding: 10px; border-radius: 6px; border: none; font-size: 14px; font-weight: bold; color: #fff; cursor: pointer; text-align: center; text-decoration: none; }
-        .btn-ui-call { background: #2979ff; }
-        .btn-ui-wa { background: #1cc88a; }
-        .btn-ui-err { width: 42px; flex: none; background: #e74a3b; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .card-actions { display: flex; gap: 6px; margin-top: 6px; width: 100%; }
+        .btn-ui { flex: 1; padding: 11px; border-radius: 8px; border: none; font-size: 14px; font-weight: bold; color: #fff; cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .btn-ui:disabled { background: #ccc !important; color: #888 !important; cursor: not-allowed; }
+        .btn-ui-call { background: #2563eb; }
+        .btn-ui-wa { background: #16a34a; }
+        .btn-ui-err { width: 44px; flex: none; background: #dc2626; font-size: 16px; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: #fff; border-radius: 12px; padding: 20px; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99999; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #fff; border-radius: 16px; padding: 20px; width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 12px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         .form-group { display: flex; flex-direction: column; gap: 4px; }
-        .form-group input, .form-group textarea { padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
+        .form-group input, .form-group select, .form-group textarea { padding: 11px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; outline: none; background: #fff; }
     </style>
 </head>
 <body>
 
     <header>
         <div class="top-row">
-            <div class="title-site">Посёлок Дарьинское</div>
+            <button style="background:none; border:none; font-size:20px; cursor:pointer;" onclick="toggleTheme()">🌓</button>
+            <div class="title-site" id="siteTitle">Посёлок Дарьинское</div>
             <div class="lang-panel">
                 <span class="lang-btn active" id="btn-ru" onclick="setLang('ru')">RU</span>
                 <span class="lang-btn" id="btn-kz" onclick="setLang('kz')">KZ</span>
@@ -61,32 +79,46 @@
         </div>
         
         <div class="search-row">
-            <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Поиск...">
-            <button class="btn-reset" onclick="resetSearch()">Сбросить</button>
+            <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Поиск по буквам, именам, услугам...">
+            <button class="btn-reset" id="btnReset" onclick="resetSearch()">Сбросить</button>
         </div>
 
-        <button class="btn-action-main" onclick="openModal('addModal')">➕ Добавить контакт / Нашли ошибку?</button>
+        <button class="btn-action-main" id="btnMainAction" onclick="openModal('addModal')">➕ Добавить контакт / Нашли ошибку?</button>
 
         <div class="tabs" id="tabsContainer">
-            <!-- Категории будут генерироваться автоматически из базы без вкладки Все -->
+            <!-- Категории генерируются скриптом автоматически заглавными буквами -->
         </div>
     </header>
 
     <main id="content">
-        <!-- Сюда скрипт выводит карточки -->
+        <!-- Сюда JS выводит карточки -->
     </main>
 
-    <!-- Модальное окно добавления -->
+    <!-- Модальное окно анкеты (Выпадающий список существующих категорий + Свой вариант) -->
     <div class="modal" id="addModal" onclick="closeModal('addModal', event)">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <h3 style="margin-bottom:5px;">Новая анкета</h3>
-            <div class="form-group"><input type="text" id="formCat" placeholder="Категория"></div>
+            <h3 id="modalTitle" style="margin-bottom:5px;">Новая анкетная форма</h3>
+            
+            <div class="form-group">
+                <select id="formCatSelect" onchange="toggleCustomCategoryField()">
+                    <!-- Наполняется автоматически существующими категориями -->
+                </select>
+            </div>
+            
+            <!-- Поле скрыто по умолчанию, появляется только при выборе "Добавить свой вариант..." -->
+            <div class="form-group" id="customCatWrapper" style="display: none;">
+                <input type="text" id="formCatCustom" placeholder="Впишите новую категорию руками">
+            </div>
+
             <div class="form-group"><input type="text" id="formPhone" placeholder="Телефон"></div>
             <div class="form-group"><input type="text" id="formName" placeholder="Имя Фамилия"></div>
-            <div class="form-group"><textarea id="formDesc" rows="3" placeholder="Описание"></textarea></div>
-            <div class="form-group"><input type="text" id="formLoc" placeholder="Ориентир"></input></div>
-            <div class="form-group"><input type="text" id="formLink" placeholder="Ссылка (необязательно)"></input></div>
-            <button class="btn-ui btn-ui-call" style="width:100%; margin-top:5px;" onclick="sendNewContact()">Отправить в WhatsApp</button>
+            <div class="form-group"><textarea id="formDesc" rows="3" placeholder="Описание услуги или товара"></textarea></div>
+            <div class="form-group"><input type="text" id="formLoc" placeholder="Ориентир / Адрес"></input></div>
+            
+            <!-- Зарезервированная скрытая ячейка под будущие визитки/скриншоты -->
+            <input type="hidden" id="formLink" value="">
+            
+            <button class="btn-ui btn-ui-call" id="btnSubmitForm" style="width:100%; margin-top:5px;" onclick="sendNewContact()">Отправить в WhatsApp</button>
         </div>
     </div>
         <script>
@@ -95,12 +127,54 @@
         let activeCategory = '';
         let allContacts = [];
 
+        // Двуязычный словарь для интерфейса и выпадающих списков
+        const dict = {
+            ru: {
+                title: "Посёлок Дарьинское",
+                search: "Поиск по буквам, именам, услугам...",
+                reset: "Сбросить",
+                mainBtn: "➕ Добавить контакт / Нашли ошибку?",
+                mTitle: "Новая анкетная форма",
+                mCustomOpt: "Добавить свой вариант...",
+                mSubmit: "Отправить в WhatsApp",
+                mAlert: "Заполните обязательные поля: Категорию, Телефон и Имя.",
+                noResults: "Ничего не найдено",
+                callMob: "Позвонить",
+                callGov: "Позвонить на городской",
+                welcomeTitle: "Добро пожаловать!",
+                welcomeText1: "Прошу прощения, если чья-то фамилия или номер записаны неверно. Если вы нашли ошибку, нажмите на кнопку с треугольником (⚠️) на нужной карточке, чтобы прислать верные сведения.",
+                welcomeText2: "💡 <strong>Подсказка по поиску:</strong> Введите любое имя или услугу. Поиск проверит все разделы разом! Если не можете найти человека по короткому имени (Паша, Женя), попробуйте ввести полное (Павел, Евгений).",
+                welcomeClose: "Открыть справочник"
+            },
+            kz: {
+                title: "Дарьинское ауылы",
+                search: "Әріптер, есімдер немесе қызметтер бойынша іздеу...",
+                reset: "Сбросить",
+                mainBtn: "➕ Контакт қосу / Қате таптыңыз ба?",
+                mTitle: "Жаңа сауалнама формасы",
+                mCustomOpt: "Өз нұсқаңызды қосу...",
+                mSubmit: "WhatsApp-қа жіберу",
+                mAlert: "Міндетті өрістерді толтырыңыз: Санат, Телефон және Есім.",
+                noResults: "Ештеңе табылмады",
+                callMob: "Қоңырау шалу",
+                callGov: "Қалалық нөмірге қоңырау шалу",
+                welcomeTitle: "Қош келдіңіздер!",
+                welcomeText1: "Егер біреудің тегі немесе нөмірі қате жазылған болса, кешірім өтінемін. Қате тапсаңыз, дұрыс мәліметтерді жіберу үшін қажетті карточкадағы үшбұрыш (⚠️) батырмасын басыңыз.",
+                welcomeText2: "💡 <strong>Іздеу бойынша нұсқаулық:</strong> Кез келген есімді немесе қызметті енгізіңіз. Іздеу барлық бөлімдерді бірден тексереді! Егер адамды қысқа есіммен (Паша, Женя) таба алмасаңыз, толық есімін (Павел, Евгений) енгізіп көріңіз.",
+                welcomeClose: "Анықтамалықты ашу"
+            }
+        };
+
+        // Нормализация текста для умного поиска (игнорируем регистр, i -> ы, ё -> е)
         function normalizeString(str) {
             if (!str) return '';
-            return str.toLowerCase().replace(/i/g, 'ы').replace(/ё/g, 'е').replace(/[^a-zа-яәғқңөұүһі0-9]/g, '');
+            return str.toLowerCase()
+                .replace(/i/g, 'ы')
+                .replace(/ё/g, 'е')
+                .replace(/[^a-zа-яәғқңөұүһі0-9]/g, '');
         }
 
-        // Парсер под ваши форматы
+        // Парсер базы данных: бережно чистит пробелы по краям ячеек, сохраняя их внутри слов
         function parseDatabase(text) {
             const lines = text.split('\n');
             const parsed = [];
@@ -111,20 +185,20 @@
                 const cells = trimmed.split('|').map(c => c.trim());
                 if (cells.length >= 6) {
                     parsed.push({
-                        category: cells[0] || 'РАЗНОЕ',
-                        title: cells[3] || 'Без названия',
-                        name: cells[2] || '',
-                        phone: cells[1] || '',
-                        landmark: cells[4] || '',
-                        link: cells[5] || ''
+                        category: cells[0].toUpperCase(), // Принудительный верхний регистр для вкладок
+                        title: cells[1],
+                        name: cells[2],
+                        phone: cells[3],
+                        landmark: cells[4],
+                        link: cells[5] // Зарезервированное место под будущие визитки/скриншоты
                     });
                 } else if (cells.length === 5) {
                     parsed.push({
-                        category: cells[0] || 'ЖИТЕЛИ',
-                        title: cells[1] || 'Житель',
-                        name: cells[2] || '',
-                        phone: cells[4] || '',
-                        landmark: cells[3] || '',
+                        category: cells[0].toUpperCase(),
+                        title: cells[1],
+                        name: cells[2],
+                        phone: cells[3],
+                        landmark: cells[4],
                         link: ''
                     });
                 }
@@ -132,23 +206,27 @@
             return parsed;
         }
 
+        // Асинхронная загрузка базы контактов
         async function loadData() {
             try {
                 const response = await fetch('baza.txt');
                 const text = await response.text();
                 allContacts = parseDatabase(text);
                 
-                // Извлекаем уникальные категории для вкладок
-                const categories = [...new Set(allContacts.map(item => item.category.toUpperCase()))];
+                // Создаем уникальные категории
+                const categories = [...new Set(allContacts.map(item => item.category))];
                 if (categories.length > 0) activeCategory = categories[0];
                 
                 renderTabs(categories);
+                buildCategorySelect(categories);
                 renderCards();
+                showWelcomeModal();
             } catch (err) {
                 alert("Не удалось загрузить базу контактов (baza.txt)");
             }
         }
 
+        // Рендеринг вкладок категорий (все буквы заглавные)
         function renderTabs(categories) {
             const container = document.getElementById('tabsContainer');
             container.innerHTML = '';
@@ -166,23 +244,49 @@
             });
         }
 
-        // Принудительное открытие WhatsApp через JS для обхода блокировок мобильных браузеров
+        // Показ окна приветствия при старте
+        function showWelcomeModal() {
+            if (document.getElementById('welcomeModal')) return;
+
+            const welcome = document.createElement('div');
+            welcome.id = 'welcomeModal';
+            welcome.className = 'modal';
+            welcome.style.display = 'flex';
+            welcome.innerHTML = `
+                <div class="modal-content" style="max-width: 450px; padding: 25px;">
+                    <h2 style="margin-bottom: 15px;">${dict[currentLang].welcomeTitle}</h2>
+                    <p style="font-size: 14px; color: #4a5568; line-height: 1.6; margin-bottom: 15px;">
+                        ${dict[currentLang].welcomeText1}
+                    </p>
+                    <p style="font-size: 14px; color: #4a5568; line-height: 1.6; margin-bottom: 20px;">
+                        ${dict[currentLang].welcomeText2}
+                    </p>
+                    <button class="btn-action-main" style="margin: 0; width: 100%; background: #0b66ff;" onclick="document.getElementById('welcomeModal').remove()">${dict[currentLang].welcomeClose}</button>
+                </div>
+            `;
+            document.body.appendChild(welcome);
+        }
+        // Принудительный запуск мессенджера через изменение локации окна
         function openWhatsApp(phone, message = "") {
+            if (!phone) return;
             const cleanPhone = phone.replace(/[^0-9]/g, '');
-            const url = `https://whatsapp.com{cleanPhone}&text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
+            window.location.href = "https://whatsapp.com" + cleanPhone + "&text=" + encodeURIComponent(message);
         }
 
+        // Обычные телефонные звонки
         function makeCall(phone) {
+            if (!phone) return;
             const cleanPhone = phone.replace(/[^0-9]/g, '');
-            window.location.href = `tel:${cleanPhone}`;
+            window.location.href = "tel:" + cleanPhone;
         }
 
+        // Кнопка сообщения об ошибке админу
         function reportError(item) {
-            const msg = `Найдена ошибка в контакте:\nКатегория: ${item.category}\nНазвание: ${item.title}\nТелефон: ${item.phone}\n\nОпишите, что не так: `;
+            const msg = `Найдена ошибка в контакте:\nКатегория: ${item.category}\nНазвание: ${item.title}\nТелефон: ${item.phone}\n\nОпишите правильные данные: `;
             openWhatsApp(adminPhone, msg);
         }
 
+        // Умная отрисовка карточек с динамической подстановкой WhatsApp/Городского
         function renderCards() {
             const container = document.getElementById('content');
             container.innerHTML = '';
@@ -198,7 +302,7 @@
             });
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:20px; color:#999;">Ничего не найдено</div>`;
+                container.innerHTML = `<div style="text-align:center; padding:20px; color:#999;">${dict[currentLang].noResults}</div>`;
                 return;
             }
 
@@ -206,16 +310,33 @@
                 const card = document.createElement('div');
                 card.className = 'card';
                 
+                // Проверяем тип номера по длине или коду
+                const cleanPhone = item.phone.replace(/[^0-9]/g, '');
+                const isOnlyLandline = cleanPhone.startsWith('77113') || cleanPhone.length === 6;
+
+                let actionButtonsHTML = '';
+                
+                if (isOnlyLandline) {
+                    // Сценарий для Госслужб: Только городской номер. WhatsApp скрыт, кнопка вызова широкая.
+                    actionButtonsHTML = `
+                        <button class="btn-ui btn-ui-call" style="background:#2563eb;" onclick="makeCall('${item.phone}')">${dict[currentLang].callGov}</button>
+                        <button class="btn-ui btn-ui-err" style="background:#dc2626;" title="Сообщить об ошибке">⚠️</button>
+                    `;
+                } else {
+                    // Стандартный сценарий: Есть сотовый номер. Полноразмерный вызов + WhatsApp на сотовый.
+                    actionButtonsHTML = `
+                        <button class="btn-ui btn-ui-call" style="background:#2563eb;" onclick="makeCall('${item.phone}')">${dict[currentLang].callMob}</button>
+                        <button class="btn-ui btn-ui-wa" style="background:#16a34a;" onclick="openWhatsApp('${item.phone}')">WhatsApp</button>
+                        <button class="btn-ui btn-ui-err" style="background:#dc2626;" title="Сообщить об ошибке">⚠️</button>
+                    `;
+                }
+
                 card.innerHTML = `
                     <span class="card-tag">${item.category}</span>
                     <div class="card-title">${item.title}</div>
                     <div class="card-desc">${item.name} ${item.landmark ? `• ${item.landmark}` : ''}</div>
                     <div class="card-phone-line">📱 ${item.phone}</div>
-                    <div class="card-actions">
-                        <button class="btn-ui btn-ui-call" onclick="makeCall('${item.phone}')">Позвонить</button>
-                        <button class="btn-ui btn-ui-wa" onclick="openWhatsApp('${item.phone}')">WhatsApp</button>
-                        <button class="btn-ui btn-ui-err" title="Сообщить об ошибке">⚠️</button>
-                    </div>
+                    <div class="card-actions">${actionButtonsHTML}</div>
                 `;
                 
                 card.querySelector('.btn-ui-err').onclick = () => reportError(item);
@@ -223,17 +344,74 @@
             });
         }
 
-        function handleSearch() { renderCards(); }
+        // Динамическое отображение кнопки "Сбросить" только при вводе текста
+        function handleSearch() { 
+            const searchInput = document.getElementById('searchInput');
+            const btnReset = document.getElementById('btnReset');
+            
+            if (searchInput.value.length > 0) {
+                btnReset.style.display = 'block';
+            } else {
+                btnReset.style.display = 'none';
+            }
+            renderCards(); 
+        }
         
         function resetSearch() {
             document.getElementById('searchInput').value = '';
+            document.getElementById('btnReset').style.display = 'none';
             renderCards();
+            }
+        // Автосборка существующего выпадающего списка в модальном окне анкеты
+        function buildCategorySelect(categories) {
+            const select = document.getElementById('formCatSelect');
+            select.innerHTML = '';
+            
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.innerText = cat;
+                select.appendChild(opt);
+            });
+            
+            const customOpt = document.createElement('option');
+            customOpt.value = 'CUSTOM_OPTION';
+            customOpt.innerText = dict[currentLang].mCustomOpt;
+            select.appendChild(customOpt);
+            
+            toggleCustomCategoryField();
         }
 
+        function toggleCustomCategoryField() {
+            const select = document.getElementById('formCatSelect');
+            const wrapper = document.getElementById('customCatWrapper');
+            if (select.value === 'CUSTOM_OPTION') {
+                wrapper.style.display = 'block';
+            } else {
+                wrapper.style.display = 'none';
+            }
+        }
+
+        // Мультиязычность интерфейса (RU / KZ)
         function setLang(lang) {
             currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`btn-${lang}`).classList.add('active');
+
+            document.getElementById('siteTitle').innerText = dict[lang].title;
+            document.getElementById('searchInput').placeholder = dict[lang].search;
+            document.getElementById('btnReset').innerText = dict[lang].reset;
+            document.getElementById('btnMainAction').innerText = dict[lang].mainBtn;
+            document.getElementById('modalTitle').innerText = dict[lang].mTitle;
+            document.getElementById('btnSubmitForm').innerText = dict[lang].mSubmit;
+
+            const categories = [...new Set(allContacts.map(item => item.category))];
+            buildCategorySelect(categories);
+            renderCards();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
         }
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
@@ -241,22 +419,79 @@
             if (event ? event.target.id === id : true) document.getElementById(id).style.display = 'none';
         }
 
+        // Отправка формы анкеты с защитой от двойного быстрого клика
         function sendNewContact() {
-            const cat = document.getElementById('formCat').value.trim();
+            const selectValue = document.getElementById('formCatSelect').value;
+            let cat = (selectValue === 'CUSTOM_OPTION') ? document.getElementById('formCatCustom').value.trim() : selectValue;
+            
             const phone = document.getElementById('formPhone').value.trim();
             const name = document.getElementById('formName').value.trim();
             const desc = document.getElementById('formDesc').value.trim();
             const loc = document.getElementById('formLoc').value.trim();
             const link = document.getElementById('formLink').value.trim();
 
-            if (!cat || !phone || !name) { alert('Заполните обязательные поля'); return; }
+            if (!cat || !phone || !name) { 
+                alert(dict[currentLang].mAlert); 
+                return; 
+            }
+
+            // Защита: временно отключаем кнопку отправки
+            const btnSubmit = document.getElementById('btnSubmitForm');
+            btnSubmit.disabled = true;
+            btnSubmit.innerText = "...";
 
             const textStr = `${cat} | ${phone} | ${name} | ${desc} | ${loc} | ${link} | $`;
             openWhatsApp(adminPhone, `Прошу добавить контакт:\n\n${textStr}`);
-            closeModal('addModal');
+            
+            setTimeout(() => {
+                btnSubmit.disabled = false;
+                btnSubmit.innerText = dict[currentLang].mSubmit;
+                closeModal('addModal');
+            }, 2000);
         }
 
-        document.addEventListener('DOMContentLoaded', loadData);
+        // Плавное скрытие экранной клавиатуры смартфона при начале пролистывания (скролла) результатов
+        window.addEventListener('scroll', () => {
+            const searchInput = document.getElementById('searchInput');
+            if (document.activeElement === searchInput) {
+                searchInput.blur();
+            }
+        });
+
+        // Инициализация свайпов для переключения вкладок категорий пальцем
+        let touchStartX = 0, touchStartY = 0;
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches.screenX; 
+            touchStartY = e.changedTouches.screenY;
+        }, false);
+
+        document.addEventListener('touchend', e => {
+            const diffX = touchStartX - e.changedTouches.screenX;
+            const diffY = touchStartY - e.changedTouches.screenY;
+            const categories = [...new Set(allContacts.map(item => item.category))];
+            const currentTabIdx = categories.indexOf(activeCategory);
+
+            if (Math.abs(diffX) > 60 && Math.abs(diffY) < 40 && categories.length > 0) {
+                if (diffX > 0 && currentTabIdx < categories.length - 1) {
+                    document.querySelectorAll('.tab')[currentTabIdx + 1].click();
+                } else if (diffX < 0 && currentTabIdx > 0) {
+                    document.querySelectorAll('.tab')[currentTabIdx - 1].click();
+                }
+            }
+        }, false);
+
+        // Старт приложения в принудительной светлой теме
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.remove('dark-mode');
+            
+            const userLang = navigator.language || navigator.userLanguage;
+            if (userLang.toLowerCase().startsWith('kk') || userLang.toLowerCase().startsWith('kz')) {
+                setLang('kz');
+            } else {
+                setLang('ru');
+            }
+            loadData();
+        });
     </script>
 </body>
 </html>
