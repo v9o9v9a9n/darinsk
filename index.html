@@ -19,32 +19,6 @@
             flex-direction: column;
             min-height: 100vh;
             touch-action: pan-y;
-            transition: background 0.3s, color 0.3s;
-        }
-        @media (prefers-color-scheme: dark) {
-            body {
-                background: #0f172a;
-                color: #f8fafc;
-            }
-            .header-container, .card, .modal-content, .tab {
-                background: #1e293b !important;
-                border-color: #334155 !important;
-            }
-            h1, .name {
-                color: #f1f5f9 !important;
-            }
-            .search-input {
-                background: #1e293b !important;
-                border-color: #475569 !important;
-                color: #f1f5f9 !important;
-            }
-            .tab {
-                color: #94a3b8 !important;
-            }
-            .tab.active {
-                background: #f1f5f9 !important;
-                color: #0f172a !important;
-            }
         }
         .header-container {
             display: flex;
@@ -62,7 +36,7 @@
             color: #0f172a;
             font-weight: 700;
         }
-                .search-container {
+        .search-container {
             margin-bottom: 12px;
             display: flex;
             gap: 6px;
@@ -74,240 +48,44 @@
             border: 2px solid #cbd5e1;
             border-radius: 12px;
             outline: none;
-            transition: border-color 0.2s;
-        }
-        .search-input:focus {
-            border-color: #2563eb;
             background: #fff;
+            color: #1e293b;
         }
+                .search-input:focus { border-color: #2563eb; }
         .search-clear {
-            background: #ef4444;
-            color: #fff;
-            border: none;
-            padding: 0 14px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            display: none;
-            user-select: none;
+            background: #ef4444; color: #fff; border: none; padding: 0 14px;
+            border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; display: none;
         }
-        .tabs {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-            margin-bottom: 12px;
-            user-select: none;
-            scrollbar-width: none;
-        }
-        .tabs::-webkit-scrollbar {
-            display: none;
-        }
+        .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 12px; user-select: none; }
         .tab {
-            background: #fff;
-            border: 1px solid #cbd5e1;
-            padding: 8px 14px;
-            font-size: 13px;
-            border-radius: 20px;
-            white-space: nowrap;
-            cursor: pointer;
-            color: #475569;
-            transition: background 0.2s, color 0.2s;
+            background: #fff; border: 1px solid #cbd5e1; padding: 8px 14px;
+            font-size: 13px; border-radius: 20px; white-space: nowrap; cursor: pointer; color: #475569;
         }
-        .tab.active {
-            background: #0f172a;
-            color: #fff;
-            border-color: #0f172a;
-            font-weight: 700;
-        }
-        .cards {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-        .card {
-            background: #fff;
-            padding: 14px;
-            border-radius: 14px;
-            border: 1px solid #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            opacity: 1;
-            animation: fadeIn 0.2s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .cat {
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 6px;
-            align-self: flex-start;
-            font-weight: 700;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            background: #e0f2fe;
-            color: #0369a1;
-        }
-        .name {
-            font-size: 16px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 4px;
-        }
-        .sub-title {
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-        .desc {
-            font-size: 13px;
-            color: #475569;
-            line-height: 1.4;
-            margin-bottom: 12px;
-            flex-grow: 1;
-        }
-        .buttons {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-        }
-        .btn {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            font-size: 13px;
-            font-weight: 700;
-            text-decoration: none;
-            border-radius: 8px;
-            color: #fff;
-        }
+        .tab.active { background: #0f172a; color: #fff; border-color: #0f172a; font-weight: 700; }
+        .cards { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .card { background: #fff; padding: 14px; border-radius: 14px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; animation: fadeIn 0.2s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        .cat { font-size: 11px; padding: 3px 8px; border-radius: 6px; align-self: flex-start; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; background: #e0f2fe; color: #0369a1; }
+        .name { font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+        .sub-title { font-size: 13px; color: #64748b; margin-bottom: 5px; font-weight: 600; }
+        .desc { font-size: 13px; color: #475569; line-height: 1.4; margin-bottom: 12px; flex-grow: 1; }
+        .buttons { display: flex; gap: 6px; align-items: center; }
+        .btn { flex: 1; text-align: center; padding: 10px; font-size: 13px; font-weight: 700; text-decoration: none; border-radius: 8px; color: #fff; }
         .btn-call { background: #2563eb; }
         .btn-wa { background: #16a34a; }
-        .btn-err {
-            background: #ef4444;
-            color: #fff;
-            padding: 8px 10px;
-            border-radius: 8px;
-            text-decoration: none;
-        }
-                .btn-add-global {
-            display: block;
-            width: 100%;
-            text-align: center;
-            background: #2563eb;
-            color: #fff;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            text-decoration: none;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 4px rgba(37,99,235,0.2);
-        }
-        .footer-counter {
-            margin-top: auto;
-            padding: 16px 0 4px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-size: 11px;
-            color: #64748b;
-            border-top: 1px solid #e2e8f0;
-        }
-        .btn-up {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #0f172a;
-            color: #fff;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            display: none;
-            z-index: 99;
-        }
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-        }
-        .modal-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-        .modal-h {
-            margin: 0 0 10px 0;
-            font-size: 16px;
-            color: #0f172a;
-            font-weight: 700;
-        }
-        .modal-p {
-            font-size: 13px;
-            color: #475569;
-            line-height: 1.5;
-            margin: 0 0 16px 0;
-        }
-        .modal-btn {
-            width: 100%;
-            background: #0f172a;
-            color: #fff;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        .lang-switch {
-            display: flex;
-            gap: 4px;
-        }
-        .lang-btn {
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            padding: 4px 10px;
-            font-size: 12px;
-            font-weight: 700;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .lang-btn.active {
-            background: #2563eb;
-            color: #fff;
-            border-color: #2563eb;
-        }
-        .no-results {
-            text-align: center;
-            padding: 40px 20px;
-            color: #64748b;
-            font-size: 15px;
-            font-weight: 600;
-            grid-column: 1 / -1;
-            display: none;
-        }
+        .btn-err { background: #ef4444; color: #fff; padding: 8px 10px; border-radius: 8px; text-decoration: none; }
+        .btn-add-global { display: block; width: 100%; text-align: center; background: #2563eb; color: #fff; padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 700; text-decoration: none; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(37,99,235,0.2); }
+        .footer-counter { margin-top: auto; padding: 16px 0 4px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; }
+        .btn-up { position: fixed; bottom: 20px; right: 20px; background: #0f172a; color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); display: none; z-index: 99; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 99999; }
+        .modal-content { background: #fff; padding: 20px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .modal-h { margin: 0 0 10px 0; font-size: 16px; color: #0f172a; font-weight: 700; }
+        .modal-p { font-size: 13px; color: #475569; line-height: 1.5; margin: 0 0 16px 0; }
+        .modal-btn { width: 100%; background: #0f172a; color: #fff; border: none; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; }
+        .lang-switch { display: flex; gap: 4px; }
+        .lang-btn { background: #f1f5f9; border: 1px solid #cbd5e1; padding: 4px 10px; font-size: 12px; font-weight: 700; border-radius: 6px; cursor: pointer; }
+        .lang-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+        .no-results { text-align: center; padding: 40px 20px; color: #64748b; font-size: 15px; font-weight: 600; grid-column: 1 / -1; display: none; }
     </style>
 </head>
 <body>
@@ -318,7 +96,6 @@
             <button class="modal-btn" onclick="closeModal()" data-translate="m_btn">Открыть справочник / Анықтамалықты ашу</button>
         </div>
     </div>
-
     <div id="addModal" class="modal" style="display:none">
         <div class="modal-content">
             <h3 class="modal-h">Добавить контакт / Контакт қосу</h3>
@@ -337,10 +114,8 @@
                 </div>
                 <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Название магазина или Услуга / Дүкен немесе Қызмет атауы *</label>
                 <input type="text" id="formShopName" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;" required>
-                
                 <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Имя Фамилия владельца / Иесінің аты-жөнi (Необязательно)</label>
                 <input type="text" id="formName" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;">
-                
                 <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Телефон / Телефон нөмiрi *</label>
                 <input type="text" id="formPhone" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;" placeholder="77051234567" required>
                 <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Описание услуги / Сипаттамасы *</label>
@@ -352,7 +127,6 @@
             </form>
         </div>
     </div>
-
     <div class="header-container">
         <h1 data-translate="title">Посёлок Дарьинское</h1>
         <div class="lang-switch">
@@ -360,29 +134,23 @@
             <button class="lang-btn" onclick="setLang('kz')">KZ</button>
         </div>
     </div>
-
     <div class="search-container">
         <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по справочнику..." oninput="filterCards()">
         <button id="searchClear" class="search-clear" onclick="clearSearch()" data-translate="clear">Сбросить</button>
     </div>
-
     <button class="btn-add-global" onclick="openAddModal()" data-translate="add_btn">➕ Добавить контакт / Нашли ошибку?</button>
-
     <div class="tabs" id="tabsBlock">
         <div class="tab active" onclick="switchTab(1,this)" data-translate="tab1">Продажи</div>
         <div class="tab" onclick="switchTab(2,this)" data-translate="tab2">Услуги</div>
         <div class="tab" onclick="switchTab(3,this)" data-translate="tab3">Госслужбы</div>
         <div class="tab" onclick="switchTab(4,this)" data-translate="tab4">Жители</div>
     </div>
-
     <div class="cards" id="tab1"></div>
     <div class="cards" id="tab2" style="display:none"></div>
     <div class="cards" id="tab3" style="display:none"></div>
     <div class="cards" id="tab4" style="display:none"></div>
     <div id="noResults" class="no-results">По вашему запросу ничего не найдено / Сұранысыңыз бойынша ештеңе табылмады</div>
-
     <div id="btnUp" class="btn-up" onclick="scrollToTop()">▲</div>
-
     <div class="footer-counter">
         <span data-translate="views">Просмотры справочника (День / Месяц / Всего):</span>
         <div id="sfcln4k6n7pzmftz17sh5fexclwgyjeyt2j"></div>
@@ -407,21 +175,15 @@
             e.preventDefault(); 
             let btn = document.getElementById('submitBtn');
             btn.disabled = true;
-            
             let cat = document.getElementById('formCat').value; 
             if (cat === 'custom') cat = document.getElementById('formCustomCat').value.trim(); 
             let shop = document.getElementById('formShopName').value.trim();
             let name = document.getElementById('formName').value.trim(); 
             let phone = document.getElementById('formPhone').value.trim(); 
             let desc = document.getElementById('formDesc').value.trim(); 
-            
             if (!cat || !shop || !phone || !desc) { btn.disabled = false; return; }
-            if (name.length > 0 && name.length < 2) { btn.disabled = false; return; }
-            if (desc.length < 5) { btn.disabled = false; return; }
-            
             let cleanPhone = phone.replace(/\D/g, ''); 
             if (cleanPhone.startsWith('8') && cleanPhone.length === 11) { cleanPhone = '7' + cleanPhone.substring(1); }
-            
             let lineTxt = `${cat}|${shop}|${cleanPhone}|${name}|${desc}||`; 
             let msg = encodeURIComponent(`Здравствуйте! Добавьте пожалуйста контакт в справочник:\n\n${lineTxt}`); 
             window.open('https://wa.me' + msg, '_blank'); 
@@ -438,36 +200,28 @@
                 const text = await response.text(); 
                 const lines = text.split('\n'); 
                 let t1 = [], t2 = [], t3 = [], t4 = []; 
-                
+                let seenPhones = new Set();
                 lines.forEach(line => { 
                     line = line.replace(/\r/g, '').trim(); 
                     if (!line || !line.includes('|')) return; 
-                    
                     let parts = line.split('|').map(p => p.trim()); 
-                    let cat = parts[0];
-                    if (!cat) return;
+                    let cat = parts[0]; if (!cat) return;
                     let c_low = cat.toLowerCase();
-                    
                     if (c_low.includes("жител")) {
                         while (parts.length < 5) { parts.push(""); }
-                        let [c, f_name, info, ph] = parts;
-                        parts = [c, "", ph, f_name, info, ""];
+                        let [c, f_name, info, ph] = parts; parts = [c, "", ph, f_name, info, ""];
                     } else {
                         while (parts.length < 7) { parts.push(""); }
                     }
-                    
-                    let [c, n, p, owner, d, o] = parts;
-                    if (!p) return;
-                    
+                    let [c, n, p, owner, d, o] = parts; let cleanP = p.replace(/\D/g, ''); if (!cleanP) return;
+                    let uniqueKey = c_low + "_" + cleanP; if (seenPhones.has(uniqueKey)) return; seenPhones.add(uniqueKey);
                     if (c_low.includes("госслужб") || c_low.includes("полици") || c_low.includes("медицин") || c_low.includes("аварийн") || c_low.includes("школ") || c_low.includes("загс") || c_low.includes("интернет") || c_low.includes("больниц") || c_low.includes("аптек") || c_low.includes("акимат") || c_low.includes("здоровь")) { t3.push(parts); } 
                     else if (c_low.includes("жител")) { t4.push(parts); } 
                     else if (c_low.includes("магазин") || c_low.includes("продукт") || c_low.includes("выпечк") || c_low.includes("подарк") || c_low.includes("красот") || c_low.includes("корм") || c_low.includes("одежд") || c_low.includes("алкомаркет") || c_low.includes("продаж")) { t1.push(parts); } 
                     else { t2.push(parts); } 
                 }); 
-                
                 const s = (a, b) => (a[1] || "").localeCompare(b[1] || "", "ru"); 
-                t1.sort(s); t2.sort(s); t3.sort(s); t4.sort(s); 
-                
+                t1.sort(s); t2.sort(s); t3.sort(s); t4.sort((a,b) => (a[3] || "").localeCompare(b[3] || "", "ru")); 
                 document.getElementById('tab1').innerHTML = renderCards(t1, false); 
                 document.getElementById('tab2').innerHTML = renderCards(t2, false); 
                 document.getElementById('tab3').innerHTML = renderCards(t3, false); 
@@ -480,17 +234,11 @@
             let html = ""; 
             data.forEach(p => { 
                 try {
-                    let [cat, name, phone, owner, desc, orient] = p; 
-                    let cleanNums = phone.replace(/\D/g, ''); 
-                    let waLink = `https://wa.me{cleanNums}`; 
-                    let errLink = `https://wa.meОшибка! ${cat}, ${name || owner}, ${phone}`; 
+                    let [cat, name, phone, owner, desc, orient] = p; let cleanNums = phone.replace(/\D/g, ''); 
+                    let waLink = `https://wa.me{cleanNums}`; let errLink = `https://wa.meОшибка! ${cat}, ${name || owner}, ${phone}`; 
                     let waBtn = (cleanNums.startsWith("771131") || cleanNums.length <= 6) ? '<span class="btn" style="background:#e2e8f0;color:#94a3b8">Городской</span>' : `<a href="${waLink}" class="btn btn-wa" data-translate="wa">WhatsApp</a>`; 
-                    
-                    let title = is_res ? owner : name; 
-                    let sub = is_res ? desc : owner; 
-                    let cardDesc = is_res ? orient : desc; 
-                    
-                    html += `<div class="card" data-cat="${cat.toLowerCase()}" data-orient="${orient.toLowerCase()}" data-name="${(name || "").toLowerCase()}" data-owner="${(owner || "").toLowerCase()}" data-desc="${desc.toLowerCase()}" data-phone="${cleanNums}"><div class="cat" data-lang-cat="${cat}">${cat}</div><div class="name">${title}</div>${sub ? `<div class="sub-title">${sub}</div>` : ''}${cardDesc ? `<div class="desc">${cardDesc}</div>` : ''}<div class="buttons"><a href="tel:+${cleanNums}" class="btn btn-call" data-translate="call">Позвонить</a>${waBtn}<a href="${errLink}" class="btn-err">⚠️</a></div></div>`; 
+                    let title = is_res ? owner : name; let sub = is_res ? desc : owner; let cardDesc = is_res ? orient : desc; 
+                    html += `<div class="card" data-cat="${cat.toLowerCase()}" data-orient="${(orient || "").toLowerCase()}" data-name="${(name || "").toLowerCase()}" data-owner="${(owner || "").toLowerCase()}" data-desc="${(desc || "").toLowerCase()}" data-phone="${cleanNums}"><div class="cat" data-lang-cat="${cat}">${cat}</div><div class="name">${title}</div>${sub ? `<div class="sub-title">${sub}</div>` : ''}${cardDesc ? `<div class="desc">${cardDesc}</div>` : ''}<div class="buttons"><a href="tel:+${cleanNums}" class="btn btn-call" data-translate="call">Позвонить</a>${waBtn}<a href="${errLink}" class="btn-err">⚠️</a></div></div>`; 
                 } catch(err) { console.log("Ошибка строки карточки"); }
             }); 
             return html; 
@@ -591,7 +339,7 @@
             let t = ['tab1', 'tab2', 'tab3', 'tab4']; 
             let idx = t.indexOf(currentTabId); 
             
-            if (Math.abs(diffX) > 80 && Math.abs(diffX) > Math.abs(diffY)) { 
+            if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) { 
                 if (diffX > 0 && idx < 3) { let nextTab = document.querySelectorAll(".tab")[idx + 1]; switchTab(idx + 2, nextTab); } 
                 if (diffX < 0 && idx > 0) { let prevTab = document.querySelectorAll(".tab")[idx - 1]; switchTab(idx, prevTab); } 
             } 
@@ -604,7 +352,7 @@
                 setTimeout(() => { 
                     setLang('kz'); 
                     document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-                    document.querySelectorAll('.lang-btn')[1].classList.add('active');
+                    document.querySelectorAll('.lang-btn').classList.add('active');
                 }, 100); 
             } 
         });
