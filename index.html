@@ -19,6 +19,32 @@
             flex-direction: column;
             min-height: 100vh;
             touch-action: pan-y;
+            transition: background 0.3s, color 0.3s;
+        }
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #0f172a;
+                color: #f8fafc;
+            }
+            .header-container, .card, .modal-content, .tab {
+                background: #1e293b !important;
+                border-color: #334155 !important;
+            }
+            h1, .name {
+                color: #f1f5f9 !important;
+            }
+            .search-input {
+                background: #1e293b !important;
+                border-color: #475569 !important;
+                color: #f1f5f9 !important;
+            }
+            .tab {
+                color: #94a3b8 !important;
+            }
+            .tab.active {
+                background: #f1f5f9 !important;
+                color: #0f172a !important;
+            }
         }
         .header-container {
             display: flex;
@@ -36,7 +62,7 @@
             color: #0f172a;
             font-weight: 700;
         }
-              .search-container {
+                .search-container {
             margin-bottom: 12px;
             display: flex;
             gap: 6px;
@@ -48,6 +74,7 @@
             border: 2px solid #cbd5e1;
             border-radius: 12px;
             outline: none;
+            transition: border-color 0.2s;
         }
         .search-input:focus {
             border-color: #2563eb;
@@ -72,6 +99,10 @@
             padding-bottom: 4px;
             margin-bottom: 12px;
             user-select: none;
+            scrollbar-width: none;
+        }
+        .tabs::-webkit-scrollbar {
+            display: none;
         }
         .tab {
             background: #fff;
@@ -82,6 +113,7 @@
             white-space: nowrap;
             cursor: pointer;
             color: #475569;
+            transition: background 0.2s, color 0.2s;
         }
         .tab.active {
             background: #0f172a;
@@ -101,6 +133,12 @@
             border: 1px solid #e2e8f0;
             display: flex;
             flex-direction: column;
+            opacity: 1;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .cat {
             font-size: 11px;
@@ -123,6 +161,7 @@
             font-size: 13px;
             color: #64748b;
             margin-bottom: 5px;
+            font-weight: 600;
         }
         .desc {
             font-size: 13px;
@@ -154,8 +193,8 @@
             padding: 8px 10px;
             border-radius: 8px;
             text-decoration: none;
-          }
-              .btn-add-global {
+        }
+                .btn-add-global {
             display: block;
             width: 100%;
             text-align: center;
@@ -209,7 +248,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 99999;
         }
         .modal-content {
             background: #fff;
@@ -260,6 +299,15 @@
             color: #fff;
             border-color: #2563eb;
         }
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+            font-size: 15px;
+            font-weight: 600;
+            grid-column: 1 / -1;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -287,14 +335,18 @@
                     <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Ваша категория / Санатты жазыңыз *</label>
                     <input type="text" id="formCustomCat" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;">
                 </div>
-                <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Имя Фамилия / Аты-жөнi *</label>
-                <input type="text" id="formName" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;" required>
+                <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Название магазина или Услуга / Дүкен немесе Қызмет атауы *</label>
+                <input type="text" id="formShopName" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;" required>
+                
+                <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Имя Фамилия владельца / Иесінің аты-жөнi (Необязательно)</label>
+                <input type="text" id="formName" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;">
+                
                 <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Телефон / Телефон нөмiрi *</label>
                 <input type="text" id="formPhone" class="search-input" style="width:100%;margin-bottom:8px;padding:8px 12px;" placeholder="77051234567" required>
                 <label style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Описание услуги / Сипаттамасы *</label>
                 <textarea id="formDesc" class="search-input" style="width:100%;margin-bottom:12px;padding:8px 12px;height:60px;resize:none;" required></textarea>
                 <div style="display:flex;gap:6px;">
-                    <button type="submit" class="modal-btn" style="background:#16a34a;">Отправить в WhatsApp</button>
+                    <button type="submit" id="submitBtn" class="modal-btn" style="background:#16a34a;">Отправить в WhatsApp</button>
                     <button type="button" class="modal-btn" style="background:#ef4444;" onclick="closeAddModal()">Отмена</button>
                 </div>
             </form>
@@ -327,6 +379,7 @@
     <div class="cards" id="tab2" style="display:none"></div>
     <div class="cards" id="tab3" style="display:none"></div>
     <div class="cards" id="tab4" style="display:none"></div>
+    <div id="noResults" class="no-results">По вашему запросу ничего не найдено / Сұранысыңыз бойынша ештеңе табылмады</div>
 
     <div id="btnUp" class="btn-up" onclick="scrollToTop()">▲</div>
 
@@ -337,47 +390,224 @@
     </div>
         <script>
         let currentTabId = 'tab1', currentLang = 'ru';
+        
         function closeModal() { document.getElementById('welcomeModal').style.display = 'none'; }
         function openAddModal() { document.getElementById('addModal').style.display = 'flex'; }
         function closeAddModal() { document.getElementById('addForm').reset(); document.getElementById('customCatBlock').style.display = 'none'; document.getElementById('addModal').style.display = 'none'; }
-        function toggleCustomCat() { let s = document.getElementById('formCat').value; document.getElementById('customCatBlock').style.display = (s === 'custom') ? 'block' : 'none'; }
-        function sendAddForm(e) { e.preventDefault(); let cat = document.getElementById('formCat').value; if (cat === 'custom') cat = document.getElementById('formCustomCat').value.trim(); let name = document.getElementById('formName').value.trim(); let phone = document.getElementById('formPhone').value.trim(); let desc = document.getElementById('formDesc').value.trim(); if (!cat || !name || !phone || !desc) return; let cleanPhone = phone.replace(/\D/g, ''); let lineTxt = `${cat}|${name}|${phone}||${desc}|`; let msg = encodeURIComponent(`Здравствуйте! Добавьте пожалуйста контакт в справочник:\n\n${lineTxt}`); window.open(`https://wa.me{msg}`, '_blank'); closeAddModal(); }
+        
+        function toggleCustomCat() { 
+            let s = document.getElementById('formCat').value; 
+            document.getElementById('customCatBlock').style.display = (s === 'custom') ? 'block' : 'none'; 
+            let shopInput = document.getElementById('formShopName');
+            if (s === 'Жители') { shopInput.value = 'Житель'; shopInput.disabled = true; } 
+            else { shopInput.value = ''; shopInput.disabled = false; }
+        }
+        
+        function sendAddForm(e) { 
+            e.preventDefault(); 
+            let btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            
+            let cat = document.getElementById('formCat').value; 
+            if (cat === 'custom') cat = document.getElementById('formCustomCat').value.trim(); 
+            let shop = document.getElementById('formShopName').value.trim();
+            let name = document.getElementById('formName').value.trim(); 
+            let phone = document.getElementById('formPhone').value.trim(); 
+            let desc = document.getElementById('formDesc').value.trim(); 
+            
+            if (!cat || !shop || !phone || !desc) { btn.disabled = false; return; }
+            if (name.length > 0 && name.length < 2) { btn.disabled = false; return; }
+            if (desc.length < 5) { btn.disabled = false; return; }
+            
+            let cleanPhone = phone.replace(/\D/g, ''); 
+            if (cleanPhone.startsWith('8') && cleanPhone.length === 11) { cleanPhone = '7' + cleanPhone.substring(1); }
+            
+            let lineTxt = `${cat}|${shop}|${cleanPhone}|${name}|${desc}||`; 
+            let msg = encodeURIComponent(`Здравствуйте! Добавьте пожалуйста контакт в справочник:\n\n${lineTxt}`); 
+            window.open('https://wa.me' + msg, '_blank'); 
+            closeAddModal();
+            setTimeout(() => { btn.disabled = false; }, 2000);
+        }
+
         window.onscroll = function () { let b = document.getElementById('btnUp'); if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) { b.style.display = 'flex'; } else { b.style.display = 'none'; } };
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-        async function loadData() { try { const response = await fetch('baza.txt?v=' + new Date().getTime()); const text = await response.text(); const lines = text.split('\n'); let t1 = [], t2 = [], t3 = [], t4 = []; lines.forEach(line => { line = line.trim(); if (!line || !line.includes('|')) return; let parts = line.split('|').map(p => p.trim()); while (parts.length < 6) { parts.push(""); } let [cat, name, phone, nums, desc, orient] = parts; if (!cat || !phone) return; let c_low = cat.toLowerCase(); if (c_low.includes("госслужб") || c_low.includes("полици") || c_low.includes("медицин") || c_low.includes("аварийн") || c_low.includes("школ") || c_low.includes("загс") || c_low.includes("интернет") || c_low.includes("больниц") || c_low.includes("аптек") || c_low.includes("акимат") || c_low.includes("здоровь")) { t3.push(parts); } else if (c_low.includes("жител")) { t4.push(parts); } else if (c_low.includes("магазин") || c_low.includes("продукт") || c_low.includes("выпечк") || c_low.includes("подарк") || c_low.includes("красот") || c_low.includes("корм") || c_low.includes("одежд") || c_low.includes("алкомаркет") || c_low.includes("продаж")) { t1.push(parts); } else { t2.push(parts); } }); const s = (a, b) => (a[1] || "").localeCompare(b[1] || "", "ru"); t1.sort(s); t2.sort(s); t3.sort(s); t4.sort(s); document.getElementById('tab1').innerHTML = renderCards(t1); document.getElementById('tab2').innerHTML = renderCards(t2); document.getElementById('tab3').innerHTML = renderCards(t3); document.getElementById('tab4').innerHTML = renderCards(t4, true); filterCards(); } catch (e) { console.log("Ошибка базы"); } }
-        function renderCards(data, is_res = false) { let html = ""; data.forEach(p => { let [cat, name, phone, nums, desc, orient] = p; let cleanNums = phone.replace(/\D/g, ''); let waLink = `https://wa.me{cleanNums}`; let errLink = `https://wa.me! ${cat}, ${name}, ${phone}`; let waBtn = (cleanNums.startsWith("771131") || cleanNums.length <= 6) ? '<span class="btn" style="background:#e2e8f0;color:#94a3b8">Городской</span>' : `<a href="${waLink}" class="btn btn-wa" data-translate="wa">WhatsApp</a>`; let title = name || cat; let sub = is_res ? orient : desc; let cardDesc = is_res ? desc : orient; html += `<div class="card" data-cat="${cat.toLowerCase()}" data-orient="${orient.toLowerCase()}" data-name="${name.toLowerCase()}" data-desc="${desc.toLowerCase()}" data-phone="${cleanNums}"><div class="cat" data-lang-cat="${cat}">${cat}</div><div class="name">${title}</div>${sub ? `<div class="sub-title" style="font-size:13px;color:#64748b;margin-bottom:5px;">${sub}</div>` : ''}${cardDesc ? `<div class="desc">${cardDesc}</div>` : ''}<div class="buttons"><a href="tel:+${cleanNums}" class="btn btn-call" data-translate="call">Позвонить</a>${waBtn}<a href="${errLink}" class="btn-err">⚠️</a></div></div>`; }); return html; }
-                  const dict = {
-            ru: { title: "Посёлок Дарьинское", tab1: "Продажи", tab2: "Услуги", tab3: "Госслужбы", tab4: "Жители", search: "🔍 Поиск по справочнику...", call: "Позвонить", wa: "WhatsApp", clear: "Сбросить", add_btn: "➕ Добавить контакт / Нашли ошибку?", views: "Просмотры справочника:", m_title: "Добро пожаловать!", m_text: "Прошу прощения, если чья-то фамилия или номер записаны неверно. Если вы нашли ошибку, нажмите на кнопку с треугольником (⚠️) на нужной карточке, чтобы прислать верные сведения.<br><br>💡 <b>Подсказка по поиску:</b> Введите любое имя или услугу. Поиск проверит все разделы разом! Если не можете найти человека по короткому имени (Паша, Женя), попробуйте ввести полное (Павел, Евгений).", m_btn: "Открыть справочник / Анықтамалықты ашу" },
-            kz: { title: "Дарьинск ауылы", tab1: "Сату", tab2: "Қызметтер", tab3: "Мемлекеттік органдар", tab4: "Тұрғындар", search: "🔍 Анықтамалық бойынша іздеу...", call: "Қоңырау шалу", wa: "WhatsApp", clear: "Тазалау", add_btn: "➕ Контакт қосу / Қате таптыңыз ба?", views: "Анықтамалықты қарау:", m_title: "Қош келдіңіздер!", m_text: "Егер біреудің тегі немесе нөмірі қате жазылса, кешірім өтінеміз. Қате тапсаңыз, дұрыс мәліметтерді жіберуіңізді сұраймыз.<br><br>💡 <b>Іздеу бойынша нұсқаулық:</b> Кез келген есімді немесе қызметті жазыңыз. Издеу жүйесі барлық бөлімдерді бірден тексереді!", m_btn: "Анықтамалықты ашу" }
+
+        async function loadData() { 
+            try { 
+                const response = await fetch('baza.txt?v=' + new Date().getTime()); 
+                const text = await response.text(); 
+                const lines = text.split('\n'); 
+                let t1 = [], t2 = [], t3 = [], t4 = []; 
+                
+                lines.forEach(line => { 
+                    line = line.replace(/\r/g, '').trim(); 
+                    if (!line || !line.includes('|')) return; 
+                    
+                    let parts = line.split('|').map(p => p.trim()); 
+                    let cat = parts[0];
+                    if (!cat) return;
+                    let c_low = cat.toLowerCase();
+                    
+                    if (c_low.includes("жител")) {
+                        while (parts.length < 5) { parts.push(""); }
+                        let [c, f_name, info, ph] = parts;
+                        parts = [c, "", ph, f_name, info, ""];
+                    } else {
+                        while (parts.length < 7) { parts.push(""); }
+                    }
+                    
+                    let [c, n, p, owner, d, o] = parts;
+                    if (!p) return;
+                    
+                    if (c_low.includes("госслужб") || c_low.includes("полици") || c_low.includes("медицин") || c_low.includes("аварийн") || c_low.includes("школ") || c_low.includes("загс") || c_low.includes("интернет") || c_low.includes("больниц") || c_low.includes("аптек") || c_low.includes("акимат") || c_low.includes("здоровь")) { t3.push(parts); } 
+                    else if (c_low.includes("жител")) { t4.push(parts); } 
+                    else if (c_low.includes("магазин") || c_low.includes("продукт") || c_low.includes("выпечк") || c_low.includes("подарк") || c_low.includes("красот") || c_low.includes("корм") || c_low.includes("одежд") || c_low.includes("алкомаркет") || c_low.includes("продаж")) { t1.push(parts); } 
+                    else { t2.push(parts); } 
+                }); 
+                
+                const s = (a, b) => (a[1] || "").localeCompare(b[1] || "", "ru"); 
+                t1.sort(s); t2.sort(s); t3.sort(s); t4.sort(s); 
+                
+                document.getElementById('tab1').innerHTML = renderCards(t1, false); 
+                document.getElementById('tab2').innerHTML = renderCards(t2, false); 
+                document.getElementById('tab3').innerHTML = renderCards(t3, false); 
+                document.getElementById('tab4').innerHTML = renderCards(t4, true); 
+                filterCards(); 
+            } catch (e) { console.log("Ошибка базы"); } 
+        }
+
+        function renderCards(data, is_res = false) { 
+            let html = ""; 
+            data.forEach(p => { 
+                try {
+                    let [cat, name, phone, owner, desc, orient] = p; 
+                    let cleanNums = phone.replace(/\D/g, ''); 
+                    let waLink = `https://wa.me{cleanNums}`; 
+                    let errLink = `https://wa.meОшибка! ${cat}, ${name || owner}, ${phone}`; 
+                    let waBtn = (cleanNums.startsWith("771131") || cleanNums.length <= 6) ? '<span class="btn" style="background:#e2e8f0;color:#94a3b8">Городской</span>' : `<a href="${waLink}" class="btn btn-wa" data-translate="wa">WhatsApp</a>`; 
+                    
+                    let title = is_res ? owner : name; 
+                    let sub = is_res ? desc : owner; 
+                    let cardDesc = is_res ? orient : desc; 
+                    
+                    html += `<div class="card" data-cat="${cat.toLowerCase()}" data-orient="${orient.toLowerCase()}" data-name="${(name || "").toLowerCase()}" data-owner="${(owner || "").toLowerCase()}" data-desc="${desc.toLowerCase()}" data-phone="${cleanNums}"><div class="cat" data-lang-cat="${cat}">${cat}</div><div class="name">${title}</div>${sub ? `<div class="sub-title">${sub}</div>` : ''}${cardDesc ? `<div class="desc">${cardDesc}</div>` : ''}<div class="buttons"><a href="tel:+${cleanNums}" class="btn btn-call" data-translate="call">Позвонить</a>${waBtn}<a href="${errLink}" class="btn-err">⚠️</a></div></div>`; 
+                } catch(err) { console.log("Ошибка строки карточки"); }
+            }); 
+            return html; 
+        }
+                    const dict = {
+            ru: { title: "Посёлок Дарьинское", tab1: "Продажи", tab2: "Услуги", tab3: "Госслужбы", tab4: "Жители", search: "🔍 Поиск по справочнику...", call: "Позвонить", wa: "WhatsApp", clear: "Сбросить", add_btn: "➕ Добавить контакт / Нашли ошибку?", views: "Просмотры справочника:", m_title: "Добро пожаловать!", m_text: "Прошу прощения, если чья-то фамилия или номер записаны неверно. Если вы нашли ошибку, нажмите на кнопку с треугольником (⚠️) на нужной карточке, чтобы прислать верные сведения.<br><br>💡 <b>Подсказка по поиску:</b> Введите любое имя или услугу. Поиск проверит все разделы разом! Если не можете найти человека по короткому имени (Паша, Женя), попробуйте ввести полное (Павел, Евгений).", m_btn: "Открыть справочник / Анықтамалықты ашу", жители: "Жители" },
+            kz: { title: "Дарьинск ауылы", tab1: "Сату", tab2: "Қызметтер", tab3: "Мемлекеттік органдар", tab4: "Тұрғындар", search: "🔍 Анықтамалық бойынша іздеу...", call: "Қоңырау шалу", wa: "WhatsApp", clear: "Тазалау", add_btn: "➕ Контакт қосу / Қате таптыңыз ба?", views: "Анықтамалықты қарау:", m_title: "Қош келдіңіздер!", m_text: "Егер біреудің тегі немесе нөмірі қате жазылса, кешірім өтінеміз. Қате тапсаңыз, дұрыс мәліметтерді жіберуіңізді сұраймыз.<br><br>💡 <b>Іздеу бойынша нұсқаулық:</b> Кез келген есімді немесе қызметті жазыңыз. Издеу жүйесі барлық бөлімдерді бірден тексереді!", m_btn: "Анықтамалықты ашу", жители: "Тұрғындар" }
         };
-        function switchTab(t, e) { document.querySelectorAll(".tab").forEach(t => t.classList.remove("active")); e.classList.add("active"); document.getElementById("tab1").style.display = "none"; document.getElementById("tab2").style.display = "none"; document.getElementById("tab3").style.display = "none"; document.getElementById("tab4").style.display = "none"; currentTabId = "tab" + t; document.getElementById(currentTabId).style.display = "grid"; filterCards(); }
+        
+        function switchTab(t, e) { 
+            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active")); 
+            e.classList.add("active"); 
+            document.getElementById("tab1").style.display = "none"; 
+            document.getElementById("tab2").style.display = "none"; 
+            document.getElementById("tab3").style.display = "none"; 
+            document.getElementById("tab4").style.display = "none"; 
+            currentTabId = "tab" + t; 
+            document.getElementById(currentTabId).style.display = "grid"; 
+            e.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            filterCards(); 
+        }
+        
         function filterCards() {
             let t = document.getElementById("searchInput").value.toLowerCase().trim();
-            let words = t.split(" ").filter(w => w.length > 0);
+            let words = t.split(/\s+/).filter(w => w.length > 0);
             let c = document.getElementById("searchClear"), b = document.getElementById("tabsBlock");
+            let hasVisible = false;
+            
             if (words.length > 0) { c.style.display = "block"; b.style.display = "none"; document.getElementById("tab1").style.display = "grid"; document.getElementById("tab2").style.display = "grid"; document.getElementById("tab3").style.display = "grid"; document.getElementById("tab4").style.display = "grid"; }
             else { c.style.display = "none"; b.style.display = "flex"; document.getElementById("tab1").style.display = currentTabId === "tab1" ? "grid" : "none"; document.getElementById("tab2").style.display = currentTabId === "tab2" ? "grid" : "none"; document.getElementById("tab3").style.display = currentTabId === "tab3" ? "grid" : "none"; document.getElementById("tab4").style.display = currentTabId === "tab4" ? "grid" : "none"; }
+            
             document.querySelectorAll(".card").forEach(t => {
                 let r = t.parentElement.id === currentTabId;
-                if (words.length === 0) { if (r) t.classList.remove("hidden"); else t.classList.add("hidden"); return; }
-                let n = t.getAttribute("data-cat") + " " + t.getAttribute("data-orient") + " " + t.getAttribute("data-name") + " " + t.getAttribute("data-desc") + " " + t.getAttribute("data-phone"); n = n.toLowerCase();
+                if (words.length === 0) { 
+                    if (r) { t.style.display = "flex"; hasVisible = true; } 
+                    else t.style.display = "none"; 
+                    return; 
+                }
+                
+                let n = (t.getAttribute("data-cat") || "") + " " + (t.getAttribute("data-orient") || "") + " " + (t.getAttribute("data-name") || "") + " " + (t.getAttribute("data-owner") || "") + " " + (t.getAttribute("data-desc") || "") + " " + (t.getAttribute("data-phone") || "");
                 let match = words.every(w => {
                     let baseSynonyms = { саня: "алекс", санек: "алекс", санёк: "алекс", шурик: "алекс", леха: "алекс", "лёха": "алекс", лешка: "алекс", алеша: "алекс", серега: "серг", "серёга": "серг", сережа: "серг", "серёжа": "серг", паша: "паве", вова: "влад", володя: "влад", слава: "влад", славик: "влад", баха: "бахы", баке: "бахы", мура: "мура", сека: "сери", секе: "сери", сако: "сама", саке: "самат", коля: "нико", женя: "евге", дима: "дмит", миша: "миха", толя: "анато", костя: "конс" };
-                    let root = w.substring(0, 4); let syn = baseSynonyms[w]; if (syn) root = syn; return n.includes(root) || n.includes(w);
+                    let root = w.substring(0, 4); 
+                    let syn = baseSynonyms[w]; 
+                    if (syn) root = syn; 
+                    return n.includes(root) || n.includes(w);
                 });
-                if (match) t.classList.remove("hidden"); else t.classList.add("hidden");
+                
+                if (match) { t.style.display = "flex"; hasVisible = true; } 
+                else t.style.display = "none";
+            });
+            
+            document.getElementById("noResults").style.display = hasVisible ? "none" : "block";
+        }
+        
+        function clearSearch() { 
+            document.getElementById("searchInput").value = ""; 
+            document.getElementById("searchInput").blur();
+            filterCards(); 
+        }
+        
+        function setLang(t) {
+            currentLang = t; 
+            document.querySelectorAll('.lang-btn').forEach(t => t.classList.remove('active')); 
+            if (event && event.target && event.target.classList) event.target.classList.add("active");
+            
+            document.querySelector('[data-translate="title"]').innerText = dict[t].title; 
+            document.querySelector('[data-translate="tab1"]').innerText = dict[t].tab1; 
+            document.querySelector('[data-translate="tab2"]').innerText = dict[t].tab2; 
+            document.querySelector('[data-translate="tab3"]').innerText = dict[t].tab3; 
+            document.querySelector('[data-translate="tab4"]').innerText = dict[t].tab4; 
+            document.querySelector('[data-translate="add_btn"]').innerText = dict[t].add_btn; 
+            document.querySelector('[data-translate="views"]').innerText = dict[t].views; 
+            document.querySelector('[data-translate="m_title"]').innerText = dict[t].m_title; 
+            document.querySelector('[data-translate="m_text"]').innerHTML = dict[t].m_text; 
+            document.querySelector('[data-translate="m_btn"]').innerText = dict[t].m_btn; 
+            document.getElementById("searchInput").placeholder = dict[t].search;
+            
+            document.querySelectorAll('[data-translate="call"]').forEach(e => e.innerText = dict[t].call); 
+            document.querySelectorAll('[data-translate="wa"]').forEach(e => e.innerText = dict[t].wa);
+            document.querySelectorAll('[data-translate="clear"]').forEach(e => e.innerText = dict[t].clear);
+            
+            document.querySelectorAll("[data-lang-cat]").forEach(e => { 
+                let r = e.getAttribute("data-lang-cat").toLowerCase(); 
+                e.innerText = dict[t][r] || e.getAttribute("data-lang-cat"); 
             });
         }
-        function clearSearch() { document.getElementById("searchInput").value = "", filterCards(); }
-        function setLang(t) {
-            currentLang = t; document.querySelectorAll('.lang-btn').forEach(t => t.classList.remove('active')); if (event && event.target && event.target.classList) event.target.classList.add("active");
-            document.querySelector('[data-translate="title"]').innerText = dict[t].title; document.querySelector('[data-translate="tab1"]').innerText = dict[t].tab1; document.querySelector('[data-translate="tab2"]').innerText = dict[t].tab2; document.querySelector('[data-translate="tab3"]').innerText = dict[t].tab3; document.querySelector('[data-translate="tab4"]').innerText = dict[t].tab4; document.querySelector('[data-translate="add_btn"]').innerText = dict[t].add_btn; document.querySelector('[data-translate="views"]').innerText = dict[t].views; document.querySelector('[data-translate="m_title"]').innerText = dict[t].m_title; document.querySelector('[data-translate="m_text"]').innerHTML = dict[t].m_text; document.querySelector('[data-translate="m_btn"]').innerText = dict[t].m_btn; document.getElementById("searchInput").placeholder = dict[t].search;
-            document.querySelectorAll('[data-translate="call"]').forEach(e => e.innerText = dict[t].call); document.querySelectorAll('[data-translate="wa"]').forEach(e => e.innerText = dict[t].wa);
-            document.querySelectorAll("[data-lang-cat]").forEach(e => { let r = e.getAttribute("data-lang-cat").toLowerCase(); e.innerText = dict[t][r] || e.getAttribute("data-lang-cat"); });
+        
+        let touchStartX = 0, touchStartY = 0, touchEndX = 0, touchEndY = 0; 
+        document.addEventListener('touchstart', e => { touchStartX = e.changedTouches.screenX; touchStartY = e.changedTouches.screenY; }, false); 
+        document.addEventListener('touchend', e => { touchEndX = e.changedTouches.screenX; touchEndY = e.changedTouches.screenY; handleSwipe(); }, false);
+        
+        function handleSwipe() { 
+            let d = document.getElementById("searchInput").value.trim(); 
+            if (d.length > 0) return; 
+            let diffX = touchStartX - touchEndX; 
+            let diffY = touchStartY - touchEndY;
+            let t = ['tab1', 'tab2', 'tab3', 'tab4']; 
+            let idx = t.indexOf(currentTabId); 
+            
+            if (Math.abs(diffX) > 80 && Math.abs(diffX) > Math.abs(diffY)) { 
+                if (diffX > 0 && idx < 3) { let nextTab = document.querySelectorAll(".tab")[idx + 1]; switchTab(idx + 2, nextTab); } 
+                if (diffX < 0 && idx > 0) { let prevTab = document.querySelectorAll(".tab")[idx - 1]; switchTab(idx, prevTab); } 
+            } 
         }
-        let touchStartX = 0, touchEndX = 0; document.addEventListener('touchstart', e => { touchStartX = e.changedTouches.screenX; }, false); document.addEventListener('touchend', e => { touchEndX = e.changedTouches.screenX; handleSwipe(); }, false);
-        function handleSwipe() { let d = document.getElementById("searchInput").value.trim(); if (d.length > 0) return; let s = touchStartX - touchEndX; let t = ['tab1', 'tab2', 'tab3', 'tab4']; let idx = t.indexOf(currentTabId); if (Math.abs(s) > 60) { if (s > 0 && idx < 3) { let nextTab = document.querySelectorAll(".tab")[idx + 1]; switchTab(idx + 2, nextTab); } if (s < 0 && idx > 0) { let prevTab = document.querySelectorAll(".tab")[idx - 1]; switchTab(idx, prevTab); } } }
-        document.addEventListener("DOMContentLoaded", () => { loadData(); let u = navigator.language || navigator.userLanguage; if (u.toLowerCase().startsWith('kk') || u.toLowerCase().startsWith('kz')) { setTimeout(() => { setLang('kz'); document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active')); }, 100); } });
+        
+        document.addEventListener("DOMContentLoaded", () => { 
+            loadData(); 
+            let u = navigator.language || navigator.userLanguage; 
+            if (u.toLowerCase().startsWith('kk') || u.toLowerCase().startsWith('kz')) { 
+                setTimeout(() => { 
+                    setLang('kz'); 
+                    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.lang-btn')[1].classList.add('active');
+                }, 100); 
+            } 
+        });
     </script>
 </body>
 </html>
